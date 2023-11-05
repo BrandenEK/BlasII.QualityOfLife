@@ -8,6 +8,9 @@ namespace BlasII.QualityOfLife
     {
         public void Update()
         {
+            if (!Main.QualityOfLife.QolSettings.allowMirabrasGlitches)
+                return;
+
             if (CoreCache.Input.GetButtonDown("Next Weapon"))
             {
                 Main.QualityOfLife.LogWarning("Pressed r");
