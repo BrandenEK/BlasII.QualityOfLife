@@ -1,4 +1,5 @@
-﻿using BlasII.ModdingAPI.Storage;
+﻿using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.Storage;
 using Il2CppLightbug.Kinematic2D.Implementation;
 using Il2CppTGK.Game;
 
@@ -11,10 +12,8 @@ namespace BlasII.QualityOfLife
             if (!Main.QualityOfLife.QolSettings.allowMirabrasGlitches)
                 return;
 
-            if (CoreCache.Input.GetButtonDown("Next Weapon"))
+            if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
             {
-                Main.QualityOfLife.LogWarning("Pressed r");
-
                 AbilityStorage.TryGetAbility("AB10", out var changeWeapon);
                 AbilityStorage.TryGetAbility("AB21", out var fullPrayer);
 
