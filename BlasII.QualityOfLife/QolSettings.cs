@@ -1,20 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using BlasII.ModdingAPI.Config;
 
 namespace BlasII.QualityOfLife
 {
     internal class QolSettings
     {
-        public bool allowMirabrasGlitches;
+        public readonly bool allowMirabrasGlitches;
 
-        [JsonConstructor]
-        public QolSettings(bool allowMirabrasGlitches)
+        public QolSettings(ConfigHandler config)
         {
-            this.allowMirabrasGlitches = allowMirabrasGlitches;
-        }
-
-        public QolSettings()
-        {
-            allowMirabrasGlitches = true;
+            allowMirabrasGlitches = config.GetProperty<bool>("Allow_Mirabras_Glitches");
         }
     }
 }

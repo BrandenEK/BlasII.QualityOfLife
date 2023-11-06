@@ -1,4 +1,5 @@
 ﻿using BlasII.ModdingAPI;
+using System.Collections.Generic;
 
 namespace BlasII.QualityOfLife
 {
@@ -12,7 +13,11 @@ namespace BlasII.QualityOfLife
 
         protected override void OnInitialize()
         {
-            QolSettings = FileHandler.LoadConfig<QolSettings>();
+            ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
+            {
+                { "Allow_Mirabras_Glitches", true },
+            });
+            QolSettings = new QolSettings(ConfigHandler);
         }
 
         protected override void OnUpdate()
