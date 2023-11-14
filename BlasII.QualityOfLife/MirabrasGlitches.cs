@@ -1,5 +1,5 @@
 ﻿using BlasII.ModdingAPI.Input;
-using BlasII.ModdingAPI.Storage;
+using BlasII.ModdingAPI.Assets;
 using Il2CppLightbug.Kinematic2D.Implementation;
 using Il2CppTGK.Game;
 
@@ -14,12 +14,12 @@ namespace BlasII.QualityOfLife
 
             if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
             {
-                AbilityStorage.TryGetAbility("AB10", out var changeWeapon);
-                AbilityStorage.TryGetAbility("AB21", out var fullPrayer);
+                var changeWeapon = AssetStorage.Abilities["AB10"];
+                var fullPrayer = AssetStorage.Abilities["AB21"];
 
                 var controller = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterController2D>();
                 controller.CancelAbility(fullPrayer);
-                controller.ForceAbilityExecution(changeWeapon);
+                controller.ActivateAbilityByType(changeWeapon);
             }
         }
     }
