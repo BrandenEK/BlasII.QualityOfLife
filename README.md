@@ -6,3 +6,6 @@ All modules here can be toggled on/off in the config file located at {GameFolder
 
 ### Allow Mirabras Glitches
 - Enables performing mirabras glitches on current patch
+
+### Consistent Typhoon
+- Makes Azure Typhoon FPS independent
