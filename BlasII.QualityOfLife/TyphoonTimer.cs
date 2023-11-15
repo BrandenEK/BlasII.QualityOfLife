@@ -47,6 +47,6 @@ namespace BlasII.QualityOfLife
             }
         }
 
-        private const float TYPHOON_FORCE = 3.55f;
+        private const float TYPHOON_FORCE = 3.4f;
     }
 }
