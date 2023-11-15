@@ -1,7 +1,5 @@
-﻿using HarmonyLib;
-using Il2CppLightbug.Kinematic2D.Core;
+﻿using Il2CppLightbug.Kinematic2D.Core;
 using Il2CppTGK.Game;
-using Il2CppTGK.Game.Components.Attack;
 using UnityEngine;
 
 namespace BlasII.QualityOfLife
@@ -12,81 +10,43 @@ namespace BlasII.QualityOfLife
 
         public void Update()
         {
-            //Main.QualityOfLife.LogWarning("Speed: " + PlayerRB.velocity.y);
-            // init = 404970459, spin = -144600212
-            var anim = CoreCache.PlayerSpawn.PlayerInstance.GetComponentInChildren<Animator>();
-            int animState = anim.GetCurrentAnimatorStateInfo(0).nameHash;
-            //Main.QualityOfLife.LogWarning("Anim state: " + animState);
+            if (CoreCache.PlayerSpawn.PlayerInstance == null)
+                return;
 
-            if (Input.GetKey(KeyCode.O) || animState == -144600212)
+            int currentAnimation = PlayerAnim.GetCurrentAnimatorStateInfo(0).nameHash;
+
+            // If in censer spin animation, override movement with typhoon force
+            if (currentAnimation == -144600212)
             {
-                Main.QualityOfLife.Log("Giving speed");
                 Vector3 newPos = _lastPosition + Vector3.up * TYPHOON_FORCE * Time.deltaTime;
-                Body.bodyTransform = new BodyTransform() { position = newPos };
+                PlayerBody.bodyTransform = new BodyTransform() { position = newPos };
             }
 
-            _lastPosition = Body.bodyTransform.position;
+            _lastPosition = PlayerBody.bodyTransform.position;
         }
 
-        private Rigidbody2D _playerRB;
-        private Rigidbody2D PlayerRB
+        private CharacterBody2DImpl _playerBody;
+        private CharacterBody2DImpl PlayerBody
         {
             get
             {
-                if (_playerRB == null)
-                    _playerRB = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<Rigidbody2D>();
-                return _playerRB;
+                if (_playerBody == null)
+                    _playerBody = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterBody2DImpl>();
+                return _playerBody;
             }
         }
 
-        private CharacterBody2DImpl _body;
-        private CharacterBody2DImpl Body
+        private Animator _playerAnim;
+        private Animator PlayerAnim
         {
             get
             {
-                if (_body == null)
-                    _body = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterBody2DImpl>();
-                return _body;
+                if (_playerAnim == null)
+                    _playerAnim = CoreCache.PlayerSpawn.PlayerInstance.GetComponentInChildren<Animator>();
+                return _playerAnim;
             }
         }
 
-        private const float TYPHOON_FORCE = 8f;
-    }
-
-    [HarmonyPatch(typeof(CenserChargedAttack), nameof(CenserChargedAttack.OnUpdate))]
-    class t
-    {
-        public static void Prefix(ref float dt)
-        {
-            //dt = (float)1 / 15;
-            //Main.QualityOfLife.LogWarning($"Charged attack ({dt} vs {Time.deltaTime})");
-        }
-    }
-
-    [HarmonyPatch(typeof(BodyTransform), nameof(BodyTransform.Translate))]
-    class t2
-    {
-        public static void Prefix(Vector3 deltaPosition)
-        {
-            Main.QualityOfLife.LogWarning("Target: " + deltaPosition);
-        }
-    }
-
-    [HarmonyPatch(typeof(CenserChargedAttack), nameof(CenserChargedAttack.OnStartExecution))]
-    class t3
-    {
-        public static void Postfix()
-        {
-            Main.QualityOfLife.Log("Start charge attack");
-        }
-    }
-
-    [HarmonyPatch(typeof(CenserChargedAttack), nameof(CenserChargedAttack.EndChargingAttack))]
-    class t4
-    {
-        public static void Postfix(bool charged)
-        {
-            Main.QualityOfLife.Log("Finish charge attack");
-        }
+        private const float TYPHOON_FORCE = 3.55f;
     }
 }
