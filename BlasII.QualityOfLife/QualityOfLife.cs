@@ -6,6 +6,7 @@ namespace BlasII.QualityOfLife
     public class QualityOfLife : BlasIIMod
     {
         private readonly MirabrasGlitches _mirabrasGlitches = new();
+        private readonly TyphoonTimer _typhoonTimer = new();
 
         internal QolSettings QolSettings { get; private set; }
 
@@ -16,6 +17,7 @@ namespace BlasII.QualityOfLife
             ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
             {
                 { "Allow_Mirabras_Glitches", true },
+                { "Consistent_Typhoon", true },
             });
             QolSettings = new QolSettings(ConfigHandler);
         }
@@ -26,6 +28,7 @@ namespace BlasII.QualityOfLife
                 return;
 
             _mirabrasGlitches.Update();
+            _typhoonTimer.Update();
         }
     }
 }
