@@ -17,6 +17,7 @@ namespace BlasII.QualityOfLife
             ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
             {
                 { "Allow_Mirabras_Glitches", true },
+                { "Consistent_Typhoon", true },
             });
             QolSettings = new QolSettings(ConfigHandler);
         }
