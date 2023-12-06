@@ -8,8 +8,6 @@ namespace BlasII.QualityOfLife
         private readonly MirabrasGlitches _mirabrasGlitches = new();
         private readonly TyphoonTimer _typhoonTimer = new();
 
-        internal QolSettings QolSettings { get; private set; }
-
         public QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
         protected override void OnInitialize()
@@ -19,7 +17,6 @@ namespace BlasII.QualityOfLife
                 { "Allow_Mirabras_Glitches", true },
                 { "Consistent_Typhoon", true },
             });
-            QolSettings = new QolSettings(ConfigHandler);
         }
 
         protected override void OnUpdate()
@@ -29,6 +26,11 @@ namespace BlasII.QualityOfLife
 
             _mirabrasGlitches.Update();
             _typhoonTimer.Update();
+        }
+
+        public static bool IsModuleActive(string setting)
+        {
+            return Main.QualityOfLife.ConfigHandler.GetProperty<bool>(setting);
         }
     }
 }
