@@ -7,6 +7,7 @@ namespace BlasII.QualityOfLife
     {
         private readonly MirabrasGlitches _mirabrasGlitches = new();
         private readonly TyphoonTimer _typhoonTimer = new();
+        // Tutorial skip handled through patches
 
         public QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
@@ -16,6 +17,7 @@ namespace BlasII.QualityOfLife
             {
                 { "Allow_Mirabras_Glitches", true },
                 { "Consistent_Typhoon", true },
+                { "Skip_Story_Level", 1 },
             });
         }
 
@@ -31,6 +33,11 @@ namespace BlasII.QualityOfLife
         public static bool IsModuleActive(string setting)
         {
             return Main.QualityOfLife.ConfigHandler.GetProperty<bool>(setting);
+        }
+
+        public static bool IsModuleLevelActive(string setting, int level)
+        {
+            return Main.QualityOfLife.ConfigHandler.GetProperty<int>(setting) >= level;
         }
     }
 }
