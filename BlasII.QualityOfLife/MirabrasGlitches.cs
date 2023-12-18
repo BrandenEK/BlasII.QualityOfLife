@@ -9,7 +9,7 @@ namespace BlasII.QualityOfLife
     {
         public void Update()
         {
-            if (!Main.QualityOfLife.QolSettings.allowMirabrasGlitches)
+            if (!QualityOfLife.IsModuleActive("Allow_Mirabras_Glitches"))
                 return;
 
             if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))

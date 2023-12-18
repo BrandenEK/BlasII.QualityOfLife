@@ -10,7 +10,7 @@ namespace BlasII.QualityOfLife
 
         public void Update()
         {
-            if (!Main.QualityOfLife.QolSettings.consistentTyphoon || CoreCache.PlayerSpawn.PlayerInstance == null)
+            if (!QualityOfLife.IsModuleActive("Consistent_Typhoon") || CoreCache.PlayerSpawn.PlayerInstance == null)
                 return;
 
             int currentAnimation = PlayerAnim.GetCurrentAnimatorStateInfo(0).nameHash;
