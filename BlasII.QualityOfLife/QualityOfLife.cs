@@ -7,7 +7,7 @@ namespace BlasII.QualityOfLife
     {
         private readonly MirabrasGlitches _mirabrasGlitches = new();
         private readonly TyphoonTimer _typhoonTimer = new();
-        // Tutorial skip handled through patches
+        // Story skip handled through patches
 
         public QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
@@ -19,6 +19,7 @@ namespace BlasII.QualityOfLife
                 { "Consistent_Typhoon", true },
                 { "Skip_Story_Level", 1 },
             });
+            MessageHandler.AddGlobalListener(ReceiveSetting);
         }
 
         protected override void OnUpdate()
@@ -28,6 +29,23 @@ namespace BlasII.QualityOfLife
 
             _mirabrasGlitches.Update();
             _typhoonTimer.Update();
+        }
+
+        private void ReceiveSetting(string _, string setting, string value)
+        {
+            if (int.TryParse(value, out int iValue))
+            {
+                ConfigHandler.SetProperty(setting, iValue);
+                return;
+            }
+
+            if (bool.TryParse(value, out bool bValue))
+            {
+                ConfigHandler.SetProperty(setting, bValue);
+                return;
+            }
+
+            LogError($"Invalid value type for '{setting}'");
         }
 
         public static bool IsModuleActive(string setting)
