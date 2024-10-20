@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using BlasII.ModdingAPI;
+using HarmonyLib;
 using Il2CppPlaymaker.UI;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Cutscenes;
@@ -15,11 +16,11 @@ internal class Tutorial_Skip1_Patch
 {
     public static bool Prefix(ShowTutorial __instance)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 1))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 1)
             return true;
 
         TutorialID tutorial = __instance.tutorial.Value.Cast<TutorialID>();
-        Main.QualityOfLife.LogWarning("Skipping tutorial: " + tutorial?.name);
+        ModLog.Warn("Skipping tutorial: " + tutorial?.name);
         __instance.Finish();
         return false;
     }
@@ -29,10 +30,10 @@ internal class Tutorial_Skip2_Patch
 {
     public static bool Prefix(TutorialID tutorialID)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 1))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 1)
             return true;
 
-        Main.QualityOfLife.LogWarning("Skipping tutorial: " + tutorialID.name);
+        ModLog.Warn("Skipping tutorial: " + tutorialID.name);
         return false;
     }
 }
@@ -45,14 +46,14 @@ class Cutscene_Skip_Patch
 {
     public static bool Prefix(PlayCutscene __instance)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 3))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 3)
             return true;
 
         // Don't skip Eviterno defeat cutscene
         if (__instance.cutsceneId?.name == "CTS17_id")
             return true;
 
-        Main.QualityOfLife.LogWarning("Skipping cutscene: " + __instance.cutsceneId?.name);
+        ModLog.Warn("Skipping cutscene: " + __instance.cutsceneId?.name);
         __instance.Finish();
         return false;
     }
@@ -62,10 +63,10 @@ class Quote_Skip_Patch
 {
     public static bool Prefix(ShowQuote __instance)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 3))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 3)
             return true;
 
-        Main.QualityOfLife.LogWarning("Skipping quote: " + __instance.Owner.name);
+        ModLog.Warn("Skipping quote: " + __instance.Owner.name);
         __instance.Finish();
         return false;
     }
@@ -79,10 +80,10 @@ class Map_Skip_Patch
 {
     public static bool Prefix(ShowMapDestinationTutorial __instance)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 4))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 4)
             return true;
 
-        Main.QualityOfLife.LogWarning("Skipping map event: " + __instance.Owner.name);
+        ModLog.Warn("Skipping map event: " + __instance.Owner.name);
         __instance.Finish();
         return false;
     }
@@ -92,10 +93,10 @@ class Sorrows_Skip_Patch
 {
     public static bool Prefix(ShowSorrowsPopup __instance)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 4))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 4)
             return true;
 
-        Main.QualityOfLife.LogWarning("Skipping sorrows event: " + __instance.Owner.name);
+        ModLog.Warn("Skipping sorrows event: " + __instance.Owner.name);
         __instance.Finish();
         return false;
     }
@@ -105,10 +106,10 @@ class Dove_Skip_Patch
 {
     public static bool Prefix(ShowDovePopup __instance)
     {
-        if (!QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 4))
+        if (Main.QualityOfLife.CurrentSettings.SkipStoryLevel < 4)
             return true;
 
-        Main.QualityOfLife.LogWarning("Skipping dove event: " + __instance.Owner.name);
+        ModLog.Warn("Skipping dove event: " + __instance.Owner.name);
         __instance.Finish();
         return false;
     }
@@ -125,11 +126,11 @@ class QuestManager_GetVarBool_Patch
         var quest = CoreCache.Quest.GetQuestData(questId, string.Empty);
 
         // Level 1 - Skip tutorials
-        if (quest.Name == "Tutorials" && QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 1))
+        if (quest.Name == "Tutorials" && Main.QualityOfLife.CurrentSettings.SkipStoryLevel >= 1)
             __result = true;
 
         // Level 2 - Skip boss intros
-        if (quest.Name == "BossesIntro" && QualityOfLife.IsModuleLevelActive("Skip_Story_Level", 2))
+        if (quest.Name == "BossesIntro" && Main.QualityOfLife.CurrentSettings.SkipStoryLevel >= 2)
             __result = true;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BlasII.QualityOfLife;
 
-public class Main : MelonMod
+internal class Main : MelonMod
 {
     public static QualityOfLife QualityOfLife { get; private set; }
 
