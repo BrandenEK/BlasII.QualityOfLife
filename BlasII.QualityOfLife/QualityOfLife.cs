@@ -15,6 +15,9 @@ public class QualityOfLife : BlasIIMod
     private readonly TyphoonTimer _typhoonTimer = new();
     // Story skip handled through patches
 
+    /// <inheritdoc cref="QolSettings" />
+    public QolSettings CurrentSettings { get; private set; }
+
     /// <summary>
     /// Initialize handlers
     /// </summary>
@@ -26,6 +29,8 @@ public class QualityOfLife : BlasIIMod
             { "Consistent_Typhoon", true },
             { "Skip_Story_Level", 1 },
         });
+        CurrentSettings = ConfigHandler.Load<QolSettings>();
+
         MessageHandler.AddGlobalListener(ReceiveSetting);
     }
 
