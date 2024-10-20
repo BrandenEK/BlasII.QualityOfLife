@@ -10,7 +10,7 @@ internal class TyphoonTimer
 
     public void Update()
     {
-        if (!QualityOfLife.IsModuleActive("Consistent_Typhoon") || CoreCache.PlayerSpawn.PlayerInstance == null)
+        if (!Main.QualityOfLife.CurrentSettings.ConsistentTyphoon || CoreCache.PlayerSpawn.PlayerInstance == null)
             return;
 
         int currentAnimation = PlayerAnim.GetCurrentAnimatorStateInfo(0).nameHash;

@@ -9,7 +9,7 @@ internal class MirabrasGlitches
 {
     public void Update()
     {
-        if (!QualityOfLife.IsModuleActive("Allow_Mirabras_Glitches"))
+        if (!Main.QualityOfLife.CurrentSettings.AllowMirabrasGlitches)
             return;
 
         if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
