@@ -1,61 +1,60 @@
 ﻿using BlasII.ModdingAPI;
 using System.Collections.Generic;
 
-namespace BlasII.QualityOfLife
+namespace BlasII.QualityOfLife;
+
+public class QualityOfLife : BlasIIMod
 {
-    public class QualityOfLife : BlasIIMod
+    private readonly MirabrasGlitches _mirabrasGlitches = new();
+    private readonly TyphoonTimer _typhoonTimer = new();
+    // Story skip handled through patches
+
+    public QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+
+    protected override void OnInitialize()
     {
-        private readonly MirabrasGlitches _mirabrasGlitches = new();
-        private readonly TyphoonTimer _typhoonTimer = new();
-        // Story skip handled through patches
-
-        public QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
-
-        protected override void OnInitialize()
+        ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
         {
-            ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
-            {
-                { "Allow_Mirabras_Glitches", true },
-                { "Consistent_Typhoon", true },
-                { "Skip_Story_Level", 1 },
-            });
-            MessageHandler.AddGlobalListener(ReceiveSetting);
+            { "Allow_Mirabras_Glitches", true },
+            { "Consistent_Typhoon", true },
+            { "Skip_Story_Level", 1 },
+        });
+        MessageHandler.AddGlobalListener(ReceiveSetting);
+    }
+
+    protected override void OnUpdate()
+    {
+        if (!LoadStatus.GameSceneLoaded)
+            return;
+
+        _mirabrasGlitches.Update();
+        _typhoonTimer.Update();
+    }
+
+    private void ReceiveSetting(string _, string setting, string value)
+    {
+        if (int.TryParse(value, out int iValue))
+        {
+            ConfigHandler.SetProperty(setting, iValue);
+            return;
         }
 
-        protected override void OnUpdate()
+        if (bool.TryParse(value, out bool bValue))
         {
-            if (!LoadStatus.GameSceneLoaded)
-                return;
-
-            _mirabrasGlitches.Update();
-            _typhoonTimer.Update();
+            ConfigHandler.SetProperty(setting, bValue);
+            return;
         }
 
-        private void ReceiveSetting(string _, string setting, string value)
-        {
-            if (int.TryParse(value, out int iValue))
-            {
-                ConfigHandler.SetProperty(setting, iValue);
-                return;
-            }
+        LogError($"Invalid value type for '{setting}'");
+    }
 
-            if (bool.TryParse(value, out bool bValue))
-            {
-                ConfigHandler.SetProperty(setting, bValue);
-                return;
-            }
+    public static bool IsModuleActive(string setting)
+    {
+        return Main.QualityOfLife.ConfigHandler.GetProperty<bool>(setting);
+    }
 
-            LogError($"Invalid value type for '{setting}'");
-        }
-
-        public static bool IsModuleActive(string setting)
-        {
-            return Main.QualityOfLife.ConfigHandler.GetProperty<bool>(setting);
-        }
-
-        public static bool IsModuleLevelActive(string setting, int level)
-        {
-            return Main.QualityOfLife.ConfigHandler.GetProperty<int>(setting) >= level;
-        }
+    public static bool IsModuleLevelActive(string setting, int level)
+    {
+        return Main.QualityOfLife.ConfigHandler.GetProperty<int>(setting) >= level;
     }
 }

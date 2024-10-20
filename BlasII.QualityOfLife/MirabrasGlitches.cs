@@ -1,26 +1,25 @@
-﻿using BlasII.ModdingAPI.Input;
-using BlasII.ModdingAPI.Assets;
+﻿using BlasII.ModdingAPI.Assets;
+using BlasII.ModdingAPI.Input;
 using Il2CppLightbug.Kinematic2D.Implementation;
 using Il2CppTGK.Game;
 
-namespace BlasII.QualityOfLife
+namespace BlasII.QualityOfLife;
+
+internal class MirabrasGlitches
 {
-    internal class MirabrasGlitches
+    public void Update()
     {
-        public void Update()
+        if (!QualityOfLife.IsModuleActive("Allow_Mirabras_Glitches"))
+            return;
+
+        if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
         {
-            if (!QualityOfLife.IsModuleActive("Allow_Mirabras_Glitches"))
-                return;
+            var changeWeapon = AssetStorage.Abilities["AB10"];
+            var fullPrayer = AssetStorage.Abilities["AB21"];
 
-            if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
-            {
-                var changeWeapon = AssetStorage.Abilities["AB10"];
-                var fullPrayer = AssetStorage.Abilities["AB21"];
-
-                var controller = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterController2D>();
-                controller.CancelAbility(fullPrayer);
-                controller.ActivateAbilityByType(changeWeapon);
-            }
+            var controller = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterController2D>();
+            controller.CancelAbility(fullPrayer);
+            controller.ActivateAbilityByType(changeWeapon);
         }
     }
 }
