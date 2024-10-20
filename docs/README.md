@@ -1,18 +1,26 @@
 # Blasphemous 2 Quality of Life
 
-All modules here can be toggled on/off in the config file located at {GameFolder}/Modding/config/Quality of Life.cfg
+<img src="https://img.shields.io/github/downloads/BrandenEK/BlasII.QualityOfLife/total?color=872124&style=for-the-badge">
 
-<br>
+---
 
-### Allow Mirabras Glitches
+## Allow Mirabras Glitches
 - Enables performing mirabras glitches on current patch
 
-### Consistent Typhoon
+## Consistent Typhoon
 - Makes Azure Typhoon FPS independent
 
 ## Story Skip
-- 0: Nothing
-- 1: Skip tutorials
-- 2: Also skip boss intros
-- 3: Also skip cutscenes
-- 4: Also skip sorrows/dove popups
+- Skips certain UI popups and story pieces
+
+| Level | Effect |
+| ----- | ------ |
+| 0 | Nothing |
+| 1 | Skip tutorials |
+| 2 | Also skip boss intros |
+| 3 | Also skip cutscenes |
+| 4 | Also skip sorrows/dove popups |
+
+## Installation
+This mod is available for download through the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous.Modding.Installer)
+- Required dependencies: Modding API
