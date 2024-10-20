@@ -1,16 +1,23 @@
 ﻿using BlasII.ModdingAPI;
+using BlasII.ModdingAPI.Helpers;
 using System.Collections.Generic;
 
 namespace BlasII.QualityOfLife;
 
+/// <summary>
+/// Provides customizable options to improve the gameplay experience
+/// </summary>
 public class QualityOfLife : BlasIIMod
 {
+    internal QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+
     private readonly MirabrasGlitches _mirabrasGlitches = new();
     private readonly TyphoonTimer _typhoonTimer = new();
     // Story skip handled through patches
 
-    public QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
-
+    /// <summary>
+    /// Initialize handlers
+    /// </summary>
     protected override void OnInitialize()
     {
         ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
@@ -22,9 +29,12 @@ public class QualityOfLife : BlasIIMod
         MessageHandler.AddGlobalListener(ReceiveSetting);
     }
 
+    /// <summary>
+    /// Update modules when in-game
+    /// </summary>
     protected override void OnUpdate()
     {
-        if (!LoadStatus.GameSceneLoaded)
+        if (!SceneHelper.GameSceneLoaded)
             return;
 
         _mirabrasGlitches.Update();
@@ -45,7 +55,7 @@ public class QualityOfLife : BlasIIMod
             return;
         }
 
-        LogError($"Invalid value type for '{setting}'");
+        ModLog.Error($"Invalid value type for '{setting}'");
     }
 
     public static bool IsModuleActive(string setting)
