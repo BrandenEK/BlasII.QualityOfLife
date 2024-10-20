@@ -1,6 +1,5 @@
 ﻿using BlasII.ModdingAPI;
 using BlasII.ModdingAPI.Helpers;
-using System.Collections.Generic;
 
 namespace BlasII.QualityOfLife;
 
@@ -23,14 +22,7 @@ public class QualityOfLife : BlasIIMod
     /// </summary>
     protected override void OnInitialize()
     {
-        ConfigHandler.RegisterDefaultProperties(new Dictionary<string, object>
-        {
-            { "Allow_Mirabras_Glitches", true },
-            { "Consistent_Typhoon", true },
-            { "Skip_Story_Level", 1 },
-        });
         CurrentSettings = ConfigHandler.Load<QolSettings>();
-
         MessageHandler.AddGlobalListener(ReceiveSetting);
     }
 
@@ -48,28 +40,22 @@ public class QualityOfLife : BlasIIMod
 
     private void ReceiveSetting(string _, string setting, string value)
     {
-        if (int.TryParse(value, out int iValue))
+        switch (setting)
         {
-            ConfigHandler.SetProperty(setting, iValue);
-            return;
+            case "AllowMirabrasGlitches":
+            case "amg":
+                CurrentSettings.AllowMirabrasGlitches = bool.Parse(value);
+                return;
+            case "ConsistentTyphoon":
+            case "ct":
+                CurrentSettings.ConsistentTyphoon = bool.Parse(value);
+                return;
+            case "SkipStoryLevel":
+            case "ssl":
+                CurrentSettings.SkipStoryLevel = int.Parse(value);
+                return;
         }
 
-        if (bool.TryParse(value, out bool bValue))
-        {
-            ConfigHandler.SetProperty(setting, bValue);
-            return;
-        }
-
-        ModLog.Error($"Invalid value type for '{setting}'");
-    }
-
-    public static bool IsModuleActive(string setting)
-    {
-        return Main.QualityOfLife.ConfigHandler.GetProperty<bool>(setting);
-    }
-
-    public static bool IsModuleLevelActive(string setting, int level)
-    {
-        return Main.QualityOfLife.ConfigHandler.GetProperty<int>(setting) >= level;
+        ModLog.Error($"Unknown setting: '{setting}'");
     }
 }
