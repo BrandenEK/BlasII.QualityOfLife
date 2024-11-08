@@ -20,8 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlasII.GameLibs" Version="1.1.0" />
-    <PackageReference Include="BlasII.ModdingAPI" Version="1.0.0" />
+    <PackageReference Include="BlasII.GameLibs" Version="2.1.0" />
+    <PackageReference Include="BlasII.ModdingAPI" Version="1.1.0" />
   </ItemGroup>
 
   <Target Name="Development" AfterTargets="PostBuildEvent">
