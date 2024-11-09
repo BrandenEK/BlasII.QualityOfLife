@@ -12,14 +12,17 @@ internal class MirabrasGlitches
         if (!Main.QualityOfLife.CurrentSettings.AllowMirabrasGlitches)
             return;
 
-        if (Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
-        {
-            var changeWeapon = AssetStorage.Abilities["AB10"];
-            var fullPrayer = AssetStorage.Abilities["AB21"];
+        if (!Main.QualityOfLife.InputHandler.GetButtonDown(ButtonType.NextWeapon))
+            return;
 
-            var controller = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterController2D>();
-            controller.CancelAbility(fullPrayer);
-            controller.ActivateAbilityByType(changeWeapon);
-        }
+        if (CoreCache.EquipmentManager.CountUnlockedWeapons() < 2)
+            return;
+
+        var changeWeapon = AssetStorage.Abilities[ABILITY_IDS.ChangeWeapon];
+        var fullPrayer = AssetStorage.Abilities[ABILITY_IDS.FullPrayer];
+
+        var controller = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterController2D>();
+        controller.CancelAbility(fullPrayer);
+        controller.ActivateAbilityByType(changeWeapon);
     }
 }
