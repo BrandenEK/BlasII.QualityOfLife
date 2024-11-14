@@ -2,6 +2,8 @@
 using BlasII.ModdingAPI.Input;
 using Il2CppLightbug.Kinematic2D.Implementation;
 using Il2CppTGK.Game;
+using Il2CppTGK.Game.Components.Abilities;
+using Il2CppTGK.Game.Components.Attack.Data;
 
 namespace BlasII.QualityOfLife;
 
@@ -24,5 +26,13 @@ internal class MirabrasGlitches
         var controller = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<CharacterController2D>();
         controller.CancelAbility(fullPrayer);
         controller.ActivateAbilityByType(changeWeapon);
+
+        WeaponID currentWeapon = CoreCache.EquipmentManager.GetCurrentWeapon();
+        int nextWeaponSlot = CoreCache.EquipmentManager.GetWeaponSlot(currentWeapon) + 1;
+        if (nextWeaponSlot >= CoreCache.EquipmentManager.GetNumWeaponSlots())
+            nextWeaponSlot = 0;
+        WeaponID nextWeapon = CoreCache.EquipmentManager.GetAssignedWeaponToSlot(nextWeaponSlot);
+
+        CoreCache.PlayerSpawn.PlayerControllerRef.GetAbility<ChangeWeaponAbility>().ChangeWeapon(nextWeapon);
     }
 }
