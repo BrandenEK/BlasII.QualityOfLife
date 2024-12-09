@@ -10,7 +10,6 @@ public class QualityOfLife : BlasIIMod
 {
     internal QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
-    private readonly MirabrasGlitches _mirabrasGlitches = new();
     private readonly TyphoonTimer _typhoonTimer = new();
     // Story skip handled through patches
 
@@ -34,7 +33,6 @@ public class QualityOfLife : BlasIIMod
         if (!SceneHelper.GameSceneLoaded)
             return;
 
-        _mirabrasGlitches.Update();
         _typhoonTimer.Update();
     }
 
@@ -42,10 +40,6 @@ public class QualityOfLife : BlasIIMod
     {
         switch (setting)
         {
-            case "AllowMirabrasGlitches":
-            case "amg":
-                CurrentSettings.AllowMirabrasGlitches = bool.Parse(value);
-                return;
             case "ConsistentTyphoon":
             case "ct":
                 CurrentSettings.ConsistentTyphoon = bool.Parse(value);
