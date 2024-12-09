@@ -1,4 +1,5 @@
 ﻿using BlasII.ModdingAPI;
+using BlasII.ModdingAPI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,19 @@ public class QualityOfLife : BlasIIMod
 {
     internal QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
-    private readonly TyphoonTimer _typhoonTimer = new();
-    // Story skip handled through patches
-
     private readonly List<BaseModule> _modules = [];
 
     /// <inheritdoc cref="QolSettings" />
     public QolSettings CurrentSettings { get; private set; }
 
-    /// <summary>
-    /// Initialize handlers
-    /// </summary>
+    /// <inheritdoc/>
     protected override void OnInitialize()
     {
-        LoadModules();
+        // Load settings and modules
         CurrentSettings = ConfigHandler.Load<QolSettings>();
+        LoadModules();
 
+        // Initialize handlers
         MessageHandler.AddGlobalListener(ReceiveSetting);
         InputHandler.RegisterDefaultKeybindings(new Dictionary<string, KeyCode>()
         {
@@ -37,16 +35,25 @@ public class QualityOfLife : BlasIIMod
             { CONSISTENT_TYPHOON, KeyCode.Keypad1 },
             { SKIP_STORY_LEVEL, KeyCode.Keypad2 },
         });
+
+        // Call OnStart for all modules
+        foreach (var module in _modules)
+            module.OnStart();
     }
 
-    /// <summary>
-    /// Checks for input and updates modules
-    /// </summary>
+    /// <inheritdoc/>
     protected override void OnUpdate()
     {
         // If a glitch status was updated, save the config
         if (ProcessInput())
             ConfigHandler.Save(CurrentSettings);
+
+        if (!SceneHelper.GameSceneLoaded)
+            return;
+
+        // Call OnUpdate for all modules
+        foreach (var module in _modules)
+            module.OnUpdate();
     }
 
     /// <summary>
@@ -75,17 +82,6 @@ public class QualityOfLife : BlasIIMod
 
         return false;
     }
-
-    /// <summary>
-    /// Update modules when in-game
-    /// </summary>
-    //protected override void OnUpdate()
-    //{
-    //    if (!SceneHelper.GameSceneLoaded)
-    //        return;
-
-    //    _typhoonTimer.Update();
-    //}
 
     private void ReceiveSetting(string _, string setting, string value)
     {
