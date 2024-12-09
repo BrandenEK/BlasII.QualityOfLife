@@ -12,6 +12,9 @@ internal class CTModule : BaseModule
     private ObjectCache<CharacterBody2DImpl> _playerBody;
     private ObjectCache<Animator> _playerAnimator;
 
+    public override string Name { get; } = "ConsistentTyphoon";
+    public override KeyCode DefaultKey { get; } = KeyCode.Keypad4;
+
     public override void OnStart()
     {
         // Requires full delegate syntax otherwise it crashes

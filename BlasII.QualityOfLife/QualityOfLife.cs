@@ -29,11 +29,7 @@ public class QualityOfLife : BlasIIMod
 
         // Initialize handlers
         MessageHandler.AddGlobalListener(ReceiveSetting);
-        InputHandler.RegisterDefaultKeybindings(new Dictionary<string, KeyCode>()
-        {
-            { "Activator", KeyCode.F5 },
-            { CONSISTENT_TYPHOON, KeyCode.Keypad1 },
-        });
+        InputHandler.RegisterDefaultKeybindings(SetupInput());
 
         // Call OnStart for all modules
         foreach (var module in _modules)
@@ -56,21 +52,56 @@ public class QualityOfLife : BlasIIMod
     }
 
     /// <summary>
+    /// Creates the keybindings dictionary from all the modules
+    /// </summary>
+    /// <returns></returns>
+    private Dictionary<string, KeyCode> SetupInput()
+    {
+        var input = new Dictionary<string, KeyCode>
+        {
+            { "Activator", KeyCode.F5 }
+        };
+
+        foreach (var module in _modules)
+            input.Add(module.Name, module.DefaultKey);
+
+        return input;
+    }
+
+    /// <summary>
     /// Checks for qol input and returns whether the config was updated
     /// </summary>
     private bool ProcessInput()
     {
+        // Check if activator key is held
         if (!InputHandler.GetKey("Activator"))
             return false;
 
-        if (InputHandler.GetKeyDown(CONSISTENT_TYPHOON))
+        bool modified = false;
+        foreach (var module in _modules)
         {
-            CurrentSettings.ConsistentTyphoon = !CurrentSettings.ConsistentTyphoon;
-            ModLog.Info($"Toggling module '{CONSISTENT_TYPHOON}' to {CurrentSettings.ConsistentTyphoon}");
-            return true;
+            // Check if this module's key was pressed
+            if (!InputHandler.GetKeyDown(module.Name))
+                continue;
+
+            // Toggle the config setting
+            ToggleModule(module.Name);
+            modified = true;
         }
 
-        return false;
+        return modified;
+    }
+
+    /// <summary>
+    /// Toggles the module's setting in the config
+    /// </summary>
+    private void ToggleModule(string name)
+    {
+        PropertyInfo property = typeof(QolSettings).GetProperty(name);
+        bool status = (bool)property.GetValue(CurrentSettings, null);
+        property.SetValue(CurrentSettings, !status);
+
+        ModLog.Info($"Toggling module '{name}' to {!status}");
     }
 
     private void ReceiveSetting(string _, string setting, string value)
@@ -86,6 +117,9 @@ public class QualityOfLife : BlasIIMod
         ModLog.Error($"Unknown setting: '{setting}'");
     }
 
+    /// <summary>
+    /// Loads all modules using reflection
+    /// </summary>
     private void LoadModules()
     {
         var modules = Assembly.GetExecutingAssembly().GetTypes()
