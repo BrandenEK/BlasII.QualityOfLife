@@ -4,22 +4,17 @@
 
 ---
 
-## Allow Mirabras Glitches
-- Enables performing mirabras glitches on current patch
+## Features
+- Enable/disable individual qol enhancements
 
-## Consistent Typhoon
-- Makes Azure Typhoon FPS independent
-
-## Story Skip
-- Skips certain UI popups and story pieces
-
-| Level | Effect |
-| ----- | ------ |
-| 0 | Nothing |
-| 1 | Skip tutorials |
-| 2 | Also skip boss intros |
-| 3 | Also skip cutscenes |
-| 4 | Also skip sorrows/dove popups |
+## Available enhancements
+| Keybinding | Effect |
+| ---------- | ------ |
+| ```F5 + Keypad1``` | Toggle 'CutsceneSkip' - Should cutscenes and quotes be skipped |
+| ```F5 + Keypad2``` | Toggle 'TutorialSkip' - Should tutorial prompts be skipped |
+| ```F5 + Keypad3``` | Toggle 'BossIntroSkip' - Should boss intros be skipped |
+| ```F5 + Keypad4``` | Toggle 'ConsistentTyphoon' - Should the typhoon attack be made fps-independent |
+| ```F5 + Keypad5``` | Toggle 'KeepEnvoyAltarpieces' - Should the envoy altarpieces be preserved after burning |
 
 ## Installation
 This mod is available for download through the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous.Modding.Installer)
