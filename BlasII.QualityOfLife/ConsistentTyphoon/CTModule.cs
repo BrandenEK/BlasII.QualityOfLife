@@ -7,22 +7,9 @@ namespace BlasII.QualityOfLife.ConsistentTyphoon;
 
 internal class CTModule : BaseModule
 {
-    public override void OnStart()
-    {
-        ModLog.Error("start");
-    }
-
-    public override void OnUpdate()
-    {
-        ModLog.Warn("update");
-    }
-}
-
-internal class TyphoonTimer
-{
     private Vector3 _lastPosition = Vector3.zero;
 
-    public void Update()
+    public override void OnUpdate()
     {
         if (!Main.QualityOfLife.CurrentSettings.ConsistentTyphoon || CoreCache.PlayerSpawn.PlayerInstance == null)
             return;
@@ -30,7 +17,7 @@ internal class TyphoonTimer
         int currentAnimation = PlayerAnim.GetCurrentAnimatorStateInfo(0).nameHash;
 
         // If in censer spin animation, override movement with typhoon force
-        if (currentAnimation == -144600212)
+        if (currentAnimation == TYPHOON_ANIM_HASH)
         {
             Vector3 newPos = _lastPosition + Vector3.up * TYPHOON_FORCE * Time.deltaTime;
             PlayerBody.bodyTransform = new BodyTransform() { position = newPos };
@@ -62,4 +49,5 @@ internal class TyphoonTimer
     }
 
     private const float TYPHOON_FORCE = 3.4f;
+    private const int TYPHOON_ANIM_HASH = -1482913320;
 }
