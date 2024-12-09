@@ -1,5 +1,8 @@
 ﻿using BlasII.ModdingAPI;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace BlasII.QualityOfLife;
@@ -14,6 +17,8 @@ public class QualityOfLife : BlasIIMod
     private readonly TyphoonTimer _typhoonTimer = new();
     // Story skip handled through patches
 
+    private readonly List<BaseModule> _modules = [];
+
     /// <inheritdoc cref="QolSettings" />
     public QolSettings CurrentSettings { get; private set; }
 
@@ -22,6 +27,7 @@ public class QualityOfLife : BlasIIMod
     /// </summary>
     protected override void OnInitialize()
     {
+        LoadModules();
         CurrentSettings = ConfigHandler.Load<QolSettings>();
 
         MessageHandler.AddGlobalListener(ReceiveSetting);
@@ -96,6 +102,16 @@ public class QualityOfLife : BlasIIMod
         }
 
         ModLog.Error($"Unknown setting: '{setting}'");
+    }
+
+    private void LoadModules()
+    {
+        var modules = Assembly.GetExecutingAssembly().GetTypes()
+            .Where(x => x.IsSubclassOf(typeof(BaseModule)))
+            .Select(x => (BaseModule)Activator.CreateInstance(x));
+
+        _modules.AddRange(modules);
+        ModLog.Info($"Loaded {_modules.Count} modules");
     }
 
     private const string CONSISTENT_TYPHOON = "ConsistentTyphoon";
