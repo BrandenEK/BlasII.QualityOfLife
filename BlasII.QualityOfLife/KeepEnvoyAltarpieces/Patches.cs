@@ -15,10 +15,10 @@ class RemoveItem_OnEnter_Patch
     {
         string itemId = __instance.itemID.name;
 
-        if (!REMOVAL_ITEMS.Contains(itemId))
+        if (!Main.QualityOfLife.CurrentSettings.KeepEnvoyAltarpieces || !REMOVAL_ITEMS.Contains(itemId))
             return true;
 
-        ModLog.Error($"Preventing removal of {itemId}");
+        ModLog.Warn($"Preventing removal of {itemId}");
         __instance.Finish();
         return false;
     }
@@ -36,10 +36,10 @@ class AddItem_OnEnter_Patch
     {
         string itemId = __instance.itemID.name;
 
-        if (!ADDITION_ITEMS.Contains(itemId))
+        if (!Main.QualityOfLife.CurrentSettings.KeepEnvoyAltarpieces || !ADDITION_ITEMS.Contains(itemId))
             return true;
 
-        ModLog.Error($"Preventing addition of {itemId}");
+        ModLog.Warn($"Preventing addition of {itemId}");
         __instance.Finish();
         return false;
     }
