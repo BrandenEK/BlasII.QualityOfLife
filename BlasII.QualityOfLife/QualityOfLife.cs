@@ -29,12 +29,7 @@ public class QualityOfLife : BlasIIMod
 
         // Initialize handlers
         MessageHandler.AddGlobalListener(ReceiveSetting);
-        InputHandler.RegisterDefaultKeybindings(new Dictionary<string, KeyCode>()
-        {
-            { "Activator", KeyCode.F5 },
-            { CONSISTENT_TYPHOON, KeyCode.Keypad1 },
-            { SKIP_STORY_LEVEL, KeyCode.Keypad2 },
-        });
+        InputHandler.RegisterDefaultKeybindings(SetupInput());
 
         // Call OnStart for all modules
         foreach (var module in _modules)
@@ -57,49 +52,88 @@ public class QualityOfLife : BlasIIMod
     }
 
     /// <summary>
+    /// Creates the keybindings dictionary from all the modules
+    /// </summary>
+    /// <returns></returns>
+    private Dictionary<string, KeyCode> SetupInput()
+    {
+        var input = new Dictionary<string, KeyCode>
+        {
+            { "Activator", KeyCode.F5 }
+        };
+
+        foreach (var module in _modules)
+            input.Add(module.Name, module.DefaultKey);
+
+        return input;
+    }
+
+    /// <summary>
     /// Checks for qol input and returns whether the config was updated
     /// </summary>
     private bool ProcessInput()
     {
+        // Check if activator key is held
         if (!InputHandler.GetKey("Activator"))
             return false;
 
-        if (InputHandler.GetKeyDown(CONSISTENT_TYPHOON))
+        bool modified = false;
+        foreach (var module in _modules)
         {
-            CurrentSettings.ConsistentTyphoon = !CurrentSettings.ConsistentTyphoon;
-            ModLog.Info($"Toggling module '{CONSISTENT_TYPHOON}' to {CurrentSettings.ConsistentTyphoon}");
-            return true;
+            // Check if this module's key was pressed
+            if (!InputHandler.GetKeyDown(module.Name))
+                continue;
+
+            // Toggle the config setting
+            ToggleModuleStatus(module.Name);
+            modified = true;
         }
 
-        if (InputHandler.GetKeyDown(SKIP_STORY_LEVEL))
-        {
-            CurrentSettings.SkipStoryLevel++;
-            if (CurrentSettings.SkipStoryLevel > 4)
-                CurrentSettings.SkipStoryLevel = 0;
-            ModLog.Info($"Cycling module '{SKIP_STORY_LEVEL}' to {CurrentSettings.SkipStoryLevel}");
-            return true;
-        }
-
-        return false;
+        return modified;
     }
 
+    /// <summary>
+    /// Toggles the module's setting in the config
+    /// </summary>
+    private void ToggleModuleStatus(string name)
+    {
+        PropertyInfo property = typeof(QolSettings).GetProperty(name);
+        bool status = (bool)property.GetValue(CurrentSettings, null);
+        property.SetValue(CurrentSettings, !status);
+
+        ModLog.Info($"Toggling module '{name}' to {!status}");
+    }
+
+    /// <summary>
+    /// Sets the module's setting in the config
+    /// </summary>
+    private void SetModuleStatus(string name, bool status)
+    {
+        PropertyInfo property = typeof(QolSettings).GetProperty(name);
+        property.SetValue(CurrentSettings, status);
+
+        ModLog.Info($"Setting module '{name}' to {status}");
+    }
+
+    /// <summary>
+    /// Handles receiving settings from other mods
+    /// </summary>
     private void ReceiveSetting(string _, string setting, string value)
     {
-        switch (setting)
+        BaseModule module = _modules.FirstOrDefault(x => x.Name == setting);
+
+        if (module == null)
         {
-            case CONSISTENT_TYPHOON:
-            case "ct":
-                CurrentSettings.ConsistentTyphoon = bool.Parse(value);
-                return;
-            case SKIP_STORY_LEVEL:
-            case "ssl":
-                CurrentSettings.SkipStoryLevel = int.Parse(value);
-                return;
+            ModLog.Error($"Unknown setting: '{setting}'");
+            return;
         }
 
-        ModLog.Error($"Unknown setting: '{setting}'");
+        SetModuleStatus(setting, bool.Parse(value));
     }
 
+    /// <summary>
+    /// Loads all modules using reflection
+    /// </summary>
     private void LoadModules()
     {
         var modules = Assembly.GetExecutingAssembly().GetTypes()
@@ -109,7 +143,4 @@ public class QualityOfLife : BlasIIMod
         _modules.AddRange(modules);
         ModLog.Info($"Loaded {_modules.Count} modules");
     }
-
-    private const string CONSISTENT_TYPHOON = "ConsistentTyphoon";
-    private const string SKIP_STORY_LEVEL = "SkipStoryLevel";
 }

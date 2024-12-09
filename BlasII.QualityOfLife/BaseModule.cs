@@ -1,8 +1,12 @@
-﻿
+﻿using UnityEngine;
+
 namespace BlasII.QualityOfLife;
 
-internal class BaseModule
+internal abstract class BaseModule
 {
+    public abstract string Name { get; }
+    public abstract KeyCode DefaultKey { get; }
+
     public virtual void OnStart() { }
 
     public virtual void OnUpdate() { }

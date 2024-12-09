@@ -7,12 +7,22 @@ namespace BlasII.QualityOfLife;
 public class QolSettings
 {
     /// <summary>
+    /// Should cutscenes and quotes be skipped
+    /// </summary>
+    public bool CutsceneSkip { get; set; }
+
+    /// <summary>
+    /// Should tutorial prompts be skipped
+    /// </summary>
+    public bool TutorialSkip { get; set; }
+
+    /// <summary>
+    /// Should boss intros be skipped
+    /// </summary>
+    public bool BossIntroSkip { get; set; }
+
+    /// <summary>
     /// Should the typhoon attack be made fps-independent
     /// </summary>
     public bool ConsistentTyphoon { get; set; }
-
-    /// <summary>
-    /// Which story/UI events should be skipped
-    /// </summary>
-    public int SkipStoryLevel { get; set; }
 }
