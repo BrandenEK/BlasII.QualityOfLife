@@ -9,10 +9,10 @@ public class QolSettings
     /// <summary>
     /// Should the typhoon attack be made fps-independent
     /// </summary>
-    public bool ConsistentTyphoon { get; set; } = true;
+    public bool ConsistentTyphoon { get; set; }
 
     /// <summary>
     /// Which story/UI events should be skipped
     /// </summary>
-    public int SkipStoryLevel { get; set; } = 1;
+    public int SkipStoryLevel { get; set; }
 }
