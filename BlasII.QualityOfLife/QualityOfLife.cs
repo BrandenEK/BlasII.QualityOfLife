@@ -63,7 +63,7 @@ public class QualityOfLife : BlasIIMod
         };
 
         foreach (var module in _modules)
-            input.Add(module.Name, module.DefaultKey);
+            input.Add(module.Name, Enum.Parse<KeyCode>($"Keypad{module.Order}"));
 
         return input;
     }
