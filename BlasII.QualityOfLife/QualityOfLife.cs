@@ -85,7 +85,7 @@ public class QualityOfLife : BlasIIMod
                 continue;
 
             // Toggle the config setting
-            ToggleModule(module.Name);
+            ToggleModuleStatus(module.Name);
             modified = true;
         }
 
@@ -95,7 +95,7 @@ public class QualityOfLife : BlasIIMod
     /// <summary>
     /// Toggles the module's setting in the config
     /// </summary>
-    private void ToggleModule(string name)
+    private void ToggleModuleStatus(string name)
     {
         PropertyInfo property = typeof(QolSettings).GetProperty(name);
         bool status = (bool)property.GetValue(CurrentSettings, null);
@@ -104,17 +104,31 @@ public class QualityOfLife : BlasIIMod
         ModLog.Info($"Toggling module '{name}' to {!status}");
     }
 
+    /// <summary>
+    /// Sets the module's setting in the config
+    /// </summary>
+    private void SetModuleStatus(string name, bool status)
+    {
+        PropertyInfo property = typeof(QolSettings).GetProperty(name);
+        property.SetValue(CurrentSettings, status);
+
+        ModLog.Info($"Setting module '{name}' to {status}");
+    }
+
+    /// <summary>
+    /// Handles receiving settings from other mods
+    /// </summary>
     private void ReceiveSetting(string _, string setting, string value)
     {
-        switch (setting)
+        BaseModule module = _modules.FirstOrDefault(x => x.Name == setting);
+
+        if (module == null)
         {
-            case CONSISTENT_TYPHOON:
-            case "ct":
-                CurrentSettings.ConsistentTyphoon = bool.Parse(value);
-                return;
+            ModLog.Error($"Unknown setting: '{setting}'");
+            return;
         }
 
-        ModLog.Error($"Unknown setting: '{setting}'");
+        SetModuleStatus(setting, bool.Parse(value));
     }
 
     /// <summary>
@@ -129,6 +143,4 @@ public class QualityOfLife : BlasIIMod
         _modules.AddRange(modules);
         ModLog.Info($"Loaded {_modules.Count} modules");
     }
-
-    private const string CONSISTENT_TYPHOON = "ConsistentTyphoon";
 }
