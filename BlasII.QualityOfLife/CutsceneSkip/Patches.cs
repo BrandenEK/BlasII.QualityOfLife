@@ -6,7 +6,7 @@ using Il2CppTGK.Game.Cutscenes;
 namespace BlasII.QualityOfLife.CutsceneSkip;
 
 /// <summary>
-/// Level 3 - Skip cutscenes
+/// Skip cutscenes from playmaker
 /// </summary>
 [HarmonyPatch(typeof(PlayCutscene), nameof(PlayCutscene.OnEnter))]
 class Cutscene_Skip_Patch
@@ -25,6 +25,10 @@ class Cutscene_Skip_Patch
         return false;
     }
 }
+
+/// <summary>
+/// Skip quotes from playmaker
+/// </summary>
 [HarmonyPatch(typeof(ShowQuote), nameof(ShowQuote.OnEnter))]
 class Quote_Skip_Patch
 {

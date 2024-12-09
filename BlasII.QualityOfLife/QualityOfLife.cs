@@ -33,7 +33,6 @@ public class QualityOfLife : BlasIIMod
         {
             { "Activator", KeyCode.F5 },
             { CONSISTENT_TYPHOON, KeyCode.Keypad1 },
-            { SKIP_STORY_LEVEL, KeyCode.Keypad2 },
         });
 
         // Call OnStart for all modules
@@ -71,15 +70,6 @@ public class QualityOfLife : BlasIIMod
             return true;
         }
 
-        if (InputHandler.GetKeyDown(SKIP_STORY_LEVEL))
-        {
-            CurrentSettings.SkipStoryLevel++;
-            if (CurrentSettings.SkipStoryLevel > 4)
-                CurrentSettings.SkipStoryLevel = 0;
-            ModLog.Info($"Cycling module '{SKIP_STORY_LEVEL}' to {CurrentSettings.SkipStoryLevel}");
-            return true;
-        }
-
         return false;
     }
 
@@ -90,10 +80,6 @@ public class QualityOfLife : BlasIIMod
             case CONSISTENT_TYPHOON:
             case "ct":
                 CurrentSettings.ConsistentTyphoon = bool.Parse(value);
-                return;
-            case SKIP_STORY_LEVEL:
-            case "ssl":
-                CurrentSettings.SkipStoryLevel = int.Parse(value);
                 return;
         }
 
@@ -111,5 +97,4 @@ public class QualityOfLife : BlasIIMod
     }
 
     private const string CONSISTENT_TYPHOON = "ConsistentTyphoon";
-    private const string SKIP_STORY_LEVEL = "SkipStoryLevel";
 }

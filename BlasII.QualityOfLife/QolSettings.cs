@@ -12,12 +12,17 @@ public class QolSettings
     public bool CutsceneSkip { get; set; }
 
     /// <summary>
+    /// Should tutorial prompts be skipped
+    /// </summary>
+    public bool TutorialSkip { get; set; }
+
+    /// <summary>
+    /// Should boss intros be skipped
+    /// </summary>
+    public bool BossIntroSkip { get; set; }
+
+    /// <summary>
     /// Should the typhoon attack be made fps-independent
     /// </summary>
     public bool ConsistentTyphoon { get; set; }
-
-    /// <summary>
-    /// Which story/UI events should be skipped
-    /// </summary>
-    public int SkipStoryLevel { get; set; }
 }
