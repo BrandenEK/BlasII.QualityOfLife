@@ -25,4 +25,9 @@ public class QolSettings
     /// Should the typhoon attack be made fps-independent
     /// </summary>
     public bool ConsistentTyphoon { get; set; }
+
+    /// <summary>
+    /// Should the envoy altarpieces be preserved after burning
+    /// </summary>
+    public bool KeepEnvoyAltarpieces { get; set; }
 }
