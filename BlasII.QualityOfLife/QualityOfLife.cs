@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI;
-using BlasII.ModdingAPI.Helpers;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace BlasII.QualityOfLife;
 
@@ -22,19 +23,63 @@ public class QualityOfLife : BlasIIMod
     protected override void OnInitialize()
     {
         CurrentSettings = ConfigHandler.Load<QolSettings>();
+
         MessageHandler.AddGlobalListener(ReceiveSetting);
+        InputHandler.RegisterDefaultKeybindings(new Dictionary<string, KeyCode>()
+        {
+            { "Activator", KeyCode.F5 },
+            { "ConsistentTyphoon", KeyCode.Keypad1 },
+            { "SkipStoryLevel", KeyCode.Keypad2 },
+        });
+    }
+
+    /// <summary>
+    /// Checks for input and updates modules
+    /// </summary>
+    protected override void OnUpdate()
+    {
+        // If a glitch status was updated, save the config
+        if (ProcessInput())
+            ConfigHandler.Save(CurrentSettings);
+    }
+
+    /// <summary>
+    /// Checks for qol input and returns whether the config was updated
+    /// </summary>
+    private bool ProcessInput()
+    {
+        if (!InputHandler.GetKey("Activator"))
+            return false;
+
+        if (InputHandler.GetKeyDown("MirabrasDive"))
+        {
+            CurrentSettings.ConsistentTyphoon = !CurrentSettings.ConsistentTyphoon;
+            ModLog.Info($"Toggling module 'MirabrasDive' to {CurrentSettings.ConsistentTyphoon}");
+            return true;
+        }
+
+        if (InputHandler.GetKeyDown("MeaCulpaHover"))
+        {
+            CurrentSettings.SkipStoryLevel++;
+            if (CurrentSettings.SkipStoryLevel > 4)
+                CurrentSettings.SkipStoryLevel = 0;
+            ModLog.Info($"Toggling module 'MeaCulpaHover' to {CurrentSettings.SkipStoryLevel}");
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
     /// Update modules when in-game
     /// </summary>
-    protected override void OnUpdate()
-    {
-        if (!SceneHelper.GameSceneLoaded)
-            return;
+    //protected override void OnUpdate()
+    //{
+    //    if (!SceneHelper.GameSceneLoaded)
+    //        return;
 
-        _typhoonTimer.Update();
-    }
+    //    _typhoonTimer.Update();
+    //}
 
     private void ReceiveSetting(string _, string setting, string value)
     {
