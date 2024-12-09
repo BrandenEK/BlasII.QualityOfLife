@@ -13,6 +13,7 @@ internal class CTModule : BaseModule
     private ObjectCache<Animator> _playerAnimator;
 
     public override string Name { get; } = "ConsistentTyphoon";
+    public override int Order { get; } = 4;
     public override KeyCode DefaultKey { get; } = KeyCode.Keypad4;
 
     public override void OnStart()

@@ -138,7 +138,8 @@ public class QualityOfLife : BlasIIMod
     {
         var modules = Assembly.GetExecutingAssembly().GetTypes()
             .Where(x => x.IsSubclassOf(typeof(BaseModule)))
-            .Select(x => (BaseModule)Activator.CreateInstance(x));
+            .Select(x => (BaseModule)Activator.CreateInstance(x))
+            .OrderBy(x => x.Order);
 
         _modules.AddRange(modules);
         ModLog.Info($"Loaded {_modules.Count} modules");
