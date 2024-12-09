@@ -28,8 +28,8 @@ public class QualityOfLife : BlasIIMod
         InputHandler.RegisterDefaultKeybindings(new Dictionary<string, KeyCode>()
         {
             { "Activator", KeyCode.F5 },
-            { "ConsistentTyphoon", KeyCode.Keypad1 },
-            { "SkipStoryLevel", KeyCode.Keypad2 },
+            { CONSISTENT_TYPHOON, KeyCode.Keypad1 },
+            { SKIP_STORY_LEVEL, KeyCode.Keypad2 },
         });
     }
 
@@ -51,19 +51,19 @@ public class QualityOfLife : BlasIIMod
         if (!InputHandler.GetKey("Activator"))
             return false;
 
-        if (InputHandler.GetKeyDown("MirabrasDive"))
+        if (InputHandler.GetKeyDown(CONSISTENT_TYPHOON))
         {
             CurrentSettings.ConsistentTyphoon = !CurrentSettings.ConsistentTyphoon;
-            ModLog.Info($"Toggling module 'MirabrasDive' to {CurrentSettings.ConsistentTyphoon}");
+            ModLog.Info($"Toggling module '{CONSISTENT_TYPHOON}' to {CurrentSettings.ConsistentTyphoon}");
             return true;
         }
 
-        if (InputHandler.GetKeyDown("MeaCulpaHover"))
+        if (InputHandler.GetKeyDown(SKIP_STORY_LEVEL))
         {
             CurrentSettings.SkipStoryLevel++;
             if (CurrentSettings.SkipStoryLevel > 4)
                 CurrentSettings.SkipStoryLevel = 0;
-            ModLog.Info($"Toggling module 'MeaCulpaHover' to {CurrentSettings.SkipStoryLevel}");
+            ModLog.Info($"Cycling module '{SKIP_STORY_LEVEL}' to {CurrentSettings.SkipStoryLevel}");
             return true;
         }
 
@@ -85,11 +85,11 @@ public class QualityOfLife : BlasIIMod
     {
         switch (setting)
         {
-            case "ConsistentTyphoon":
+            case CONSISTENT_TYPHOON:
             case "ct":
                 CurrentSettings.ConsistentTyphoon = bool.Parse(value);
                 return;
-            case "SkipStoryLevel":
+            case SKIP_STORY_LEVEL:
             case "ssl":
                 CurrentSettings.SkipStoryLevel = int.Parse(value);
                 return;
@@ -97,4 +97,7 @@ public class QualityOfLife : BlasIIMod
 
         ModLog.Error($"Unknown setting: '{setting}'");
     }
+
+    private const string CONSISTENT_TYPHOON = "ConsistentTyphoon";
+    private const string SKIP_STORY_LEVEL = "SkipStoryLevel";
 }
