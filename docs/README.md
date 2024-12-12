@@ -5,12 +5,12 @@
 ---
 
 ## Features
-- Enable/disable individual qol enhancements
+- Enable/disable individual qol enhancements with a single keypress
+- Press 'F5 + KeypadEnter' to toggle all modules at once
 
 ## Available enhancements
 | Keybinding | Name | Effect |
 | ---------- | ---- | ------ |
-| ```F5 + KeypadEnter``` | --- | Toggle all modules at once |
 | ```F5 + Keypad1``` | CutsceneSkip | Should cutscenes and quotes be skipped |
 | ```F5 + Keypad2``` | TutorialSkip | Should tutorial prompts be skipped |
 | ```F5 + Keypad3``` | BossIntroSkip | Should boss intros be skipped |
