@@ -30,4 +30,9 @@ public class QolSettings
     /// Should the envoy altarpieces be preserved after burning
     /// </summary>
     public bool KeepEnvoyAltarpieces { get; set; }
+
+    /// <summary>
+    /// Should remembrance items be turned into figures automatically
+    /// </summary>
+    public bool AutoConvertMementos { get; set; }
 }
