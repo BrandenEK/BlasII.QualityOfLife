@@ -8,9 +8,9 @@ using Il2CppTGK.Inventory;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BlasII.QualityOfLife.AutoConvertMementos;
+namespace BlasII.QualityOfLife.Modules;
 
-internal class ACMModule : BaseModule
+internal class AutoConvertMementos : BaseModule
 {
     public override string Name { get; } = "AutoConvertMementos";
     public override int Order { get; } = 6;
@@ -56,7 +56,7 @@ class InventoryComponent_AddItemAsync_Patch
 /// Replace items given through playmaker
 /// </summary>
 [HarmonyPatch(typeof(AddItem), nameof(AddItem.OnEnter))]
-class AddItem_OnEnter_Patch
+class AddItem_OnEnter_Patch_ACM
 {
     public static void Prefix()
     {

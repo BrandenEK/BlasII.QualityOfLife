@@ -51,7 +51,7 @@ internal class Tutorial_Skip2_Patch
 /// Force tutorial flags
 /// </summary>
 [HarmonyPatch(typeof(QuestManager), nameof(QuestManager.GetQuestVarBoolValue))]
-class QuestManager_GetVarBool_Patch
+class QuestManager_GetVarBool_Patch_TS
 {
     public static void Postfix(int questId, ref bool __result)
     {

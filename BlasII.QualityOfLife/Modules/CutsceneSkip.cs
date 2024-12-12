@@ -7,7 +7,13 @@ using Il2CppTGK.Game.Cutscenes;
 using System.Linq;
 using UnityEngine;
 
-namespace BlasII.QualityOfLife.CutsceneSkip;
+namespace BlasII.QualityOfLife.Modules;
+
+internal class CutsceneSkip : BaseModule
+{
+    public override string Name { get; } = "CutsceneSkip";
+    public override int Order { get; } = 1;
+}
 
 /// <summary>
 /// Skip cutscenes from playmaker
