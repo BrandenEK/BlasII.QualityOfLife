@@ -32,6 +32,11 @@ public class QolSettings
     public bool KeepEnvoyAltarpieces { get; set; }
 
     /// <summary>
+    /// Should remembrance items be turned into figures automatically
+    /// </summary>
+    public bool AutoConvertMementos { get; set; }
+
+    /// <summary>
     /// Should the Mark of Martyrdom points you receive be doubled
     /// </summary>
     public bool DoubleOrbExperience { get; set; }
