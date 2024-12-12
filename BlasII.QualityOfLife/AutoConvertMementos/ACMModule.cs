@@ -14,27 +14,19 @@ internal class ACMModule : BaseModule
 {
     public override string Name { get; } = "AutoConvertMementos";
     public override int Order { get; } = 6;
-
-    public static readonly Dictionary<string, string> REMEMBRANCE_ITEMS = new()
-    {
-        { "QI04", "FG19" },
-        { "QI06", "FG09" },
-        { "QI09", "FG23" },
-        { "QI10", "FG20" },
-        { "QI55", "FG29" },
-        { "QI62", "FG10" },
-        { "QI71", "FG44" },
-    };
 }
 
+/// <summary>
+/// If a remembrance item was given on this frame, replace it with the figure
+/// </summary>
 [HarmonyPatch(typeof(InventoryComponent), nameof(InventoryComponent.AddItemAsync))]
 class InventoryComponent_AddItemAsync_Patch
 {
     public static void Prefix(ref ItemID itemID)
     {
-        //if (!Main.QualityOfLife.CurrentSettings.AutoConvertMementos)
-        //    return;
-        ModLog.Warn("Frame: " + Time.frameCount);
+        if (!Main.QualityOfLife.CurrentSettings.AutoConvertMementos)
+            return;
+
         if (Time.frameCount != ITEM_FRAME)
             return;
 
@@ -66,17 +58,9 @@ class InventoryComponent_AddItemAsync_Patch
 [HarmonyPatch(typeof(AddItem), nameof(AddItem.OnEnter))]
 class AddItem_OnEnter_Patch
 {
-    public static void Prefix(AddItem __instance)
+    public static void Prefix()
     {
-        if (!Main.QualityOfLife.CurrentSettings.AutoConvertMementos)
-            return;
-        ModLog.Error("Frame: " + Time.frameCount);
         InventoryComponent_AddItemAsync_Patch.ITEM_FRAME = Time.frameCount;
-        //if (!ACMModule.REMEMBRANCE_ITEMS.TryGetValue(__instance.itemID.name, out string newItem))
-        //    return;
-
-        //ModLog.Info($"Replacing {__instance.itemID.name} with {newItem}");
-        //__instance.itemID = AssetStorage.Figures[newItem];
     }
 }
 
@@ -86,17 +70,10 @@ class AddItem_OnEnter_Patch
 [HarmonyPatch(typeof(ShopManager), nameof(ShopManager.SellItem))]
 class ShopManager_SellItem_Patch
 {
-    public static void Prefix(ItemID itemId)
+    public static void Prefix()
     {
-        if (!Main.QualityOfLife.CurrentSettings.AutoConvertMementos)
-            return;
-        ModLog.Error("Frame: " + Time.frameCount);
         InventoryComponent_AddItemAsync_Patch.ITEM_FRAME = Time.frameCount;
-        //if (!ACMModule.REMEMBRANCE_ITEMS.TryGetValue(itemId.name, out string newItem))
-        //    return;
-
-        //ModLog.Info($"Replacing {itemId.name} with {newItem}");
-        //AssetStorage.PlayerInventory.RemoveItem(itemId);
-        //AssetStorage.PlayerInventory.AddItemAsync(AssetStorage.Figures[newItem]);
     }
 }
+
+// Randomizer GiveItem() patch ??
