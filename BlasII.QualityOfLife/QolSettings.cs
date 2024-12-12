@@ -30,4 +30,9 @@ public class QolSettings
     /// Should the envoy altarpieces be preserved after burning
     /// </summary>
     public bool KeepEnvoyAltarpieces { get; set; }
+
+    /// <summary>
+    /// Should the Mark of Martyrdom points you receive be doubled
+    /// </summary>
+    public bool DoubleOrbExperience { get; set; }
 }
