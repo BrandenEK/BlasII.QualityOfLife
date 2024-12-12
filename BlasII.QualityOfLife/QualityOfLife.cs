@@ -79,7 +79,17 @@ public class QualityOfLife : BlasIIMod
         if (!InputHandler.GetKey("Activator"))
             return false;
 
+        // Check if toggle all key was pressed
+        if (InputHandler.GetKeyDown("Toggle_All"))
+        {
+            _toggleStatus = !_toggleStatus;
 
+            foreach (var module in _modules)
+                SetModuleStatus(module.Name, _toggleStatus);
+
+            ModLog.Info($"Toggling all modules to {_toggleStatus}");
+            return true;
+        }
 
         bool modified = false;
         foreach (var module in _modules)
