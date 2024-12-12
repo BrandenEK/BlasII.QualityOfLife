@@ -34,7 +34,7 @@ class Cutscene_Skip_Patch
     }
 
     private static readonly string[] BANNED_CUTSCENES = ["CTS17_id"];
-    private static readonly string[] FADE_CUTSCENES = ["CTS08_id"];
+    private static readonly string[] FADE_CUTSCENES = ["CTS08_id", "CTS10_id", "CTS12_id"];
 }
 
 /// <summary>
