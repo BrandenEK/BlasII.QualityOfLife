@@ -29,7 +29,7 @@ public class QualityOfLife : BlasIIMod
         LoadModules();
 
         // Initialize handlers
-        MessageHandler.AddGlobalListener(ReceiveSetting);
+        //MessageHandler.AddGlobalListener(ReceiveSetting);
         InputHandler.RegisterDefaultKeybindings(SetupInput());
 
         // Call OnStart for all modules
@@ -126,24 +126,25 @@ public class QualityOfLife : BlasIIMod
         PropertyInfo property = typeof(QolSettings).GetProperty(name);
         property.SetValue(CurrentSettings, status);
 
-        ModLog.Info($"Setting module '{name}' to {status}");
+        //ModLog.Info($"Setting module '{name}' to {status}");
     }
 
-    /// <summary>
-    /// Handles receiving settings from other mods
-    /// </summary>
-    private void ReceiveSetting(string _, string setting, string value)
-    {
-        BaseModule module = _modules.FirstOrDefault(x => x.Name == setting);
+    ///// <summary>
+    ///// Handles receiving settings from other mods
+    ///// Removed because that would update the config without the user knowing
+    ///// </summary>
+    //private void ReceiveSetting(string _, string setting, string value)
+    //{
+    //    BaseModule module = _modules.FirstOrDefault(x => x.Name == setting);
 
-        if (module == null)
-        {
-            ModLog.Error($"Unknown setting: '{setting}'");
-            return;
-        }
+    //    if (module == null)
+    //    {
+    //        ModLog.Error($"Unknown setting: '{setting}'");
+    //        return;
+    //    }
 
-        SetModuleStatus(setting, bool.Parse(value));
-    }
+    //    SetModuleStatus(setting, bool.Parse(value));
+    //}
 
     /// <summary>
     /// Loads all modules using reflection
