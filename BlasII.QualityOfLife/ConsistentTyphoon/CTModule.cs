@@ -30,7 +30,7 @@ internal class CTModule : BaseModule
         int currentAnimation = _playerAnimator.Value.GetCurrentAnimatorStateInfo(0).nameHash;
 
         // If in censer spin animation, override movement with typhoon force
-        if (currentAnimation == TYPHOON_ANIM_HASH)
+        if (currentAnimation == TYPHOON_ANIM_HASH1 || currentAnimation == TYPHOON_ANIM_HASH2)
         {
             Vector3 newPos = _lastPosition + Vector3.up * TYPHOON_FORCE * Time.deltaTime;
             _playerBody.Value.bodyTransform = new BodyTransform() { position = newPos };
@@ -40,5 +40,7 @@ internal class CTModule : BaseModule
     }
 
     private const float TYPHOON_FORCE = 3.4f;
-    private const int TYPHOON_ANIM_HASH = -1482913320;
+    private const int TYPHOON_ANIM_HASH1 = -1482913320;
+    private const int TYPHOON_ANIM_HASH2 = -144600212;
+    // Not sure what determines which anim he is in
 }
