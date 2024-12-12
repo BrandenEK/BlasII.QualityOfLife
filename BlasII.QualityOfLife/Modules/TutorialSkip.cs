@@ -17,7 +17,7 @@ internal class TutorialSkip : BaseModule
 /// Skip tutorials from playmaker
 /// </summary>
 [HarmonyPatch(typeof(ShowTutorial), nameof(ShowTutorial.OnEnter))]
-internal class Tutorial_Skip1_Patch
+internal class ShowTutorial_OnEnter_Patch_TS
 {
     public static bool Prefix(ShowTutorial __instance)
     {
@@ -35,7 +35,7 @@ internal class Tutorial_Skip1_Patch
 /// Skip tutorials from the manager
 /// </summary>
 [HarmonyPatch(typeof(TutorialManager), nameof(TutorialManager.ShowTutorialAsync))]
-internal class Tutorial_Skip2_Patch
+internal class TutorialManager_ShowTutorialAsync_Patch_TS
 {
     public static bool Prefix(TutorialID tutorialID)
     {

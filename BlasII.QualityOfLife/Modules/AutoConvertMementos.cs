@@ -20,7 +20,7 @@ internal class AutoConvertMementos : BaseModule
 /// If a remembrance item was given on this frame, replace it with the figure
 /// </summary>
 [HarmonyPatch(typeof(InventoryComponent), nameof(InventoryComponent.AddItemAsync))]
-class InventoryComponent_AddItemAsync_Patch
+class InventoryComponent_AddItemAsync_Patch_ACM
 {
     public static void Prefix(ref ItemID itemID)
     {
@@ -60,7 +60,7 @@ class AddItem_OnEnter_Patch_ACM
 {
     public static void Prefix()
     {
-        InventoryComponent_AddItemAsync_Patch.ITEM_FRAME = Time.frameCount;
+        InventoryComponent_AddItemAsync_Patch_ACM.ITEM_FRAME = Time.frameCount;
     }
 }
 
@@ -68,11 +68,11 @@ class AddItem_OnEnter_Patch_ACM
 /// Replace items given through shops
 /// </summary>
 [HarmonyPatch(typeof(ShopManager), nameof(ShopManager.SellItem))]
-class ShopManager_SellItem_Patch
+class ShopManager_SellItem_Patch_ACM
 {
     public static void Prefix()
     {
-        InventoryComponent_AddItemAsync_Patch.ITEM_FRAME = Time.frameCount;
+        InventoryComponent_AddItemAsync_Patch_ACM.ITEM_FRAME = Time.frameCount;
     }
 }
 
