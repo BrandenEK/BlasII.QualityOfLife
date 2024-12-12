@@ -16,6 +16,7 @@ public class QualityOfLife : BlasIIMod
     internal QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
     private readonly List<BaseModule> _modules = [];
+    private bool _toggleStatus = false;
 
     /// <inheritdoc cref="QolSettings" />
     public QolSettings CurrentSettings { get; private set; }
@@ -59,11 +60,12 @@ public class QualityOfLife : BlasIIMod
     {
         var input = new Dictionary<string, KeyCode>
         {
-            { "Activator", KeyCode.F5 }
+            { "Activator", KeyCode.F5 },
+            { "Toggle_All", KeyCode.KeypadEnter },
         };
 
         foreach (var module in _modules)
-            input.Add(module.Name, Enum.Parse<KeyCode>($"Keypad{module.Order}"));
+            input.Add($"Toggle_{module.Name}", Enum.Parse<KeyCode>($"Keypad{module.Order}"));
 
         return input;
     }
@@ -77,11 +79,13 @@ public class QualityOfLife : BlasIIMod
         if (!InputHandler.GetKey("Activator"))
             return false;
 
+
+
         bool modified = false;
         foreach (var module in _modules)
         {
             // Check if this module's key was pressed
-            if (!InputHandler.GetKeyDown(module.Name))
+            if (!InputHandler.GetKeyDown($"Toggle_{module.Name}"))
                 continue;
 
             // Toggle the config setting
