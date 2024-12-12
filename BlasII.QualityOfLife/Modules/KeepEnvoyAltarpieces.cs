@@ -3,7 +3,13 @@ using HarmonyLib;
 using Il2CppPlaymaker.Inventory;
 using System.Linq;
 
-namespace BlasII.QualityOfLife.KeepEnvoyAltarpieces;
+namespace BlasII.QualityOfLife.Modules;
+
+internal class KeepEnvoyAltarpieces : BaseModule
+{
+    public override string Name { get; } = "KeepEnvoyAltarpieces";
+    public override int Order { get; } = 5;
+}
 
 /// <summary>
 /// Prevent removal of FG30-FG33

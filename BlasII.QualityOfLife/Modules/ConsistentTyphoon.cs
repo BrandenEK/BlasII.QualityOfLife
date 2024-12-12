@@ -3,9 +3,9 @@ using Il2CppLightbug.Kinematic2D.Core;
 using Il2CppTGK.Game;
 using UnityEngine;
 
-namespace BlasII.QualityOfLife.ConsistentTyphoon;
+namespace BlasII.QualityOfLife.Modules;
 
-internal class CTModule : BaseModule
+internal class ConsistentTyphoon : BaseModule
 {
     private Vector3 _lastPosition = Vector3.zero;
 

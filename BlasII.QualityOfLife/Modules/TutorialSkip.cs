@@ -5,7 +5,13 @@ using Il2CppTGK.Game;
 using Il2CppTGK.Game.Managers;
 using Il2CppTGK.Game.Tutorial;
 
-namespace BlasII.QualityOfLife.TutorialSkip;
+namespace BlasII.QualityOfLife.Modules;
+
+internal class TutorialSkip : BaseModule
+{
+    public override string Name { get; } = "TutorialSkip";
+    public override int Order { get; } = 2;
+}
 
 /// <summary>
 /// Skip tutorials from playmaker
