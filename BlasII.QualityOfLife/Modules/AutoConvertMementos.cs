@@ -3,6 +3,7 @@ using BlasII.ModdingAPI.Assets;
 using HarmonyLib;
 using Il2CppPlaymaker.Inventory;
 using Il2CppTGK.Game.Components.Inventory;
+using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 using Il2CppTGK.Inventory;
 using System.Collections.Generic;
@@ -76,4 +77,23 @@ class ShopManager_SellItem_Patch_ACM
     }
 }
 
+
+[HarmonyPatch(typeof(InventoryComponent), nameof(InventoryComponent.CanUnequipItem))]
+class t
+{
+    public static bool Prefix(ref bool __result)
+    {
+        __result = true;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(PR17PopupWindowLogic), nameof(PR17PopupWindowLogic.ShowPopup))]
+class t2
+{
+    public static void Postfix()
+    {
+        ModLog.Warn("Opening popup!");
+    }
+}
 // Randomizer GiveItem() patch ??
