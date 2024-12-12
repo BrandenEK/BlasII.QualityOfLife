@@ -7,13 +7,19 @@ using Il2CppTGK.Game.Cutscenes;
 using System.Linq;
 using UnityEngine;
 
-namespace BlasII.QualityOfLife.CutsceneSkip;
+namespace BlasII.QualityOfLife.Modules;
+
+internal class CutsceneSkip : BaseModule
+{
+    public override string Name { get; } = "CutsceneSkip";
+    public override int Order { get; } = 1;
+}
 
 /// <summary>
 /// Skip cutscenes from playmaker
 /// </summary>
 [HarmonyPatch(typeof(PlayCutscene), nameof(PlayCutscene.PlayAndWait))]
-class Cutscene_Skip_Patch
+class PlayCutscene_PlayAndWait_Patch_CS
 {
     public static bool Prefix(PlayCutscene __instance)
     {
@@ -26,7 +32,7 @@ class Cutscene_Skip_Patch
             return true;
 
         if (FADE_CUTSCENES.Contains(name))
-            FadeWindowLogic_FadeAsync_Patch.FADE_FLAG = true;
+            FadeWindowLogic_FadeAsync_Patch_CS.FADE_FLAG = true;
 
         ModLog.Warn("Skipping cutscene: " + name);
         __instance.Finish();
@@ -41,7 +47,7 @@ class Cutscene_Skip_Patch
 /// Skip quotes from playmaker
 /// </summary>
 [HarmonyPatch(typeof(ShowQuote), nameof(ShowQuote.OnEnter))]
-class Quote_Skip_Patch
+class ShowQuote_OnEnter_Patch_CS
 {
     public static bool Prefix(ShowQuote __instance)
     {
@@ -58,7 +64,7 @@ class Quote_Skip_Patch
 /// Force the fadeout to be black after skipping certain cutscenes
 /// </summary>
 [HarmonyPatch(typeof(FadeWindowLogic), nameof(FadeWindowLogic.FadeAsync), typeof(float), typeof(Action), typeof(Color))]
-class FadeWindowLogic_FadeAsync_Patch
+class FadeWindowLogic_FadeAsync_Patch_CS
 {
     public static void Prefix(FadeWindowLogic __instance, ref Color targetColor)
     {

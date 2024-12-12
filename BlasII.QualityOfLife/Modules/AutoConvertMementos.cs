@@ -8,9 +8,9 @@ using Il2CppTGK.Inventory;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BlasII.QualityOfLife.AutoConvertMementos;
+namespace BlasII.QualityOfLife.Modules;
 
-internal class ACMModule : BaseModule
+internal class AutoConvertMementos : BaseModule
 {
     public override string Name { get; } = "AutoConvertMementos";
     public override int Order { get; } = 6;
@@ -20,7 +20,7 @@ internal class ACMModule : BaseModule
 /// If a remembrance item was given on this frame, replace it with the figure
 /// </summary>
 [HarmonyPatch(typeof(InventoryComponent), nameof(InventoryComponent.AddItemAsync))]
-class InventoryComponent_AddItemAsync_Patch
+class InventoryComponent_AddItemAsync_Patch_ACM
 {
     public static void Prefix(ref ItemID itemID)
     {
@@ -56,11 +56,11 @@ class InventoryComponent_AddItemAsync_Patch
 /// Replace items given through playmaker
 /// </summary>
 [HarmonyPatch(typeof(AddItem), nameof(AddItem.OnEnter))]
-class AddItem_OnEnter_Patch
+class AddItem_OnEnter_Patch_ACM
 {
     public static void Prefix()
     {
-        InventoryComponent_AddItemAsync_Patch.ITEM_FRAME = Time.frameCount;
+        InventoryComponent_AddItemAsync_Patch_ACM.ITEM_FRAME = Time.frameCount;
     }
 }
 
@@ -68,11 +68,11 @@ class AddItem_OnEnter_Patch
 /// Replace items given through shops
 /// </summary>
 [HarmonyPatch(typeof(ShopManager), nameof(ShopManager.SellItem))]
-class ShopManager_SellItem_Patch
+class ShopManager_SellItem_Patch_ACM
 {
     public static void Prefix()
     {
-        InventoryComponent_AddItemAsync_Patch.ITEM_FRAME = Time.frameCount;
+        InventoryComponent_AddItemAsync_Patch_ACM.ITEM_FRAME = Time.frameCount;
     }
 }
 

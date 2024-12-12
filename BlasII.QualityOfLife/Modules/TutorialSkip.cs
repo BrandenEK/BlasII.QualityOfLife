@@ -5,13 +5,19 @@ using Il2CppTGK.Game;
 using Il2CppTGK.Game.Managers;
 using Il2CppTGK.Game.Tutorial;
 
-namespace BlasII.QualityOfLife.TutorialSkip;
+namespace BlasII.QualityOfLife.Modules;
+
+internal class TutorialSkip : BaseModule
+{
+    public override string Name { get; } = "TutorialSkip";
+    public override int Order { get; } = 2;
+}
 
 /// <summary>
 /// Skip tutorials from playmaker
 /// </summary>
 [HarmonyPatch(typeof(ShowTutorial), nameof(ShowTutorial.OnEnter))]
-internal class Tutorial_Skip1_Patch
+internal class ShowTutorial_OnEnter_Patch_TS
 {
     public static bool Prefix(ShowTutorial __instance)
     {
@@ -29,7 +35,7 @@ internal class Tutorial_Skip1_Patch
 /// Skip tutorials from the manager
 /// </summary>
 [HarmonyPatch(typeof(TutorialManager), nameof(TutorialManager.ShowTutorialAsync))]
-internal class Tutorial_Skip2_Patch
+internal class TutorialManager_ShowTutorialAsync_Patch_TS
 {
     public static bool Prefix(TutorialID tutorialID)
     {
@@ -45,7 +51,7 @@ internal class Tutorial_Skip2_Patch
 /// Force tutorial flags
 /// </summary>
 [HarmonyPatch(typeof(QuestManager), nameof(QuestManager.GetQuestVarBoolValue))]
-class QuestManager_GetVarBool_Patch
+class QuestManager_GetVarBool_Patch_TS
 {
     public static void Postfix(int questId, ref bool __result)
     {

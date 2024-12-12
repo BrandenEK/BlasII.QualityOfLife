@@ -3,13 +3,19 @@ using HarmonyLib;
 using Il2CppPlaymaker.Inventory;
 using System.Linq;
 
-namespace BlasII.QualityOfLife.KeepEnvoyAltarpieces;
+namespace BlasII.QualityOfLife.Modules;
+
+internal class KeepEnvoyAltarpieces : BaseModule
+{
+    public override string Name { get; } = "KeepEnvoyAltarpieces";
+    public override int Order { get; } = 5;
+}
 
 /// <summary>
 /// Prevent removal of FG30-FG33
 /// </summary>
 [HarmonyPatch(typeof(RemoveItem), nameof(RemoveItem.OnEnter))]
-class RemoveItem_OnEnter_Patch
+class RemoveItem_OnEnter_Patch_KEA
 {
     public static bool Prefix(RemoveItem __instance)
     {
@@ -30,7 +36,7 @@ class RemoveItem_OnEnter_Patch
 /// Prevent addition of FG40-FG43
 /// </summary>
 [HarmonyPatch(typeof(AddItem), nameof(AddItem.OnEnter))]
-class AddItem_OnEnter_Patch
+class AddItem_OnEnter_Patch_KEA
 {
     public static bool Prefix(AddItem __instance)
     {

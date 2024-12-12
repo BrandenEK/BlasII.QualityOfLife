@@ -13,7 +13,7 @@ internal class DoubleOrbExperience : BaseModule
 /// Multiply the orbxp added by 2
 /// </summary>
 [HarmonyPatch(typeof(StatsComponent), nameof(StatsComponent.AddRewardOrbsXP))]
-class StatsComponent_AddRewardOrbsXP_Patch
+class StatsComponent_AddRewardOrbsXP_Patch_DOE
 {
     public static void Prefix(ref int value)
     {
