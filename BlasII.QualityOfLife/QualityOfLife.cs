@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI;
 using BlasII.ModdingAPI.Helpers;
+using BlasII.Randomizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,35 @@ public class QualityOfLife : BlasIIMod
         // Call OnStart for all modules
         foreach (var module in _modules)
             module.OnStart();
+
+        if (ExecuteIfLoaded("Randomizer", TestRando))
+        {
+            ModLog.Warn("Randomizer is loaded!");
+        }
+        else
+        {
+            ModLog.Warn("No rando loaded!");
+        }
+    }
+
+    private bool ExecuteIfLoaded(string modName, Action method)
+    {
+        if (ModHelper.IsModLoadedByName(modName))
+        {
+            method();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void TestRando()
+    {
+        Randomizer.Randomizer rando = ModHelper.GetModByName("Randomizer") as Randomizer.Randomizer;
+        ModLog.Info("Rando mode: " + rando.IsRandomizerMode);
+
+        // Manually patch the ItemHandler.GiveItemAtLocation() to mark the ITEM_FRAME
+        // Manually patch the new ItemHandler.GiveItem() to change the Item param to a different one
     }
 
     /// <inheritdoc/>
