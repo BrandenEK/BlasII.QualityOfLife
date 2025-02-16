@@ -30,6 +30,9 @@ class InventoryComponent_AddItemAsync_Patch_ACM
         if (Time.frameCount != ITEM_FRAME)
             return;
 
+        if (ModdingAPI.Helpers.ModHelper.IsModLoadedByName("Randomizer"))
+            return;
+
         if (!REMEMBRANCE_ITEMS.TryGetValue(itemID.name, out string newItem))
             return;
 
