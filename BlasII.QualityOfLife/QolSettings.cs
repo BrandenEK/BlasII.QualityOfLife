@@ -40,4 +40,9 @@ public class QolSettings
     /// Should the Mark of Martyrdom points you receive be doubled
     /// </summary>
     public bool DoubleOrbExperience { get; set; }
+
+    /// <summary>
+    /// Should all prie dieus be maximum level
+    /// </summary>
+    public bool MaxPrieDieus { get; set; }
 }
