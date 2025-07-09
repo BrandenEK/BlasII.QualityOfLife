@@ -18,6 +18,7 @@
 | ```F5 + Keypad5``` | KeepEnvoyAltarpieces | Should the envoy altarpieces be preserved after burning |
 | ```F5 + Keypad6``` | AutoConvertMementos | Should remembrance items be turned into figures automatically |
 | ```F5 + Keypad7``` | DoubleOrbExperience | Should the Mark of Martyrdom points you receive be doubled |
+| ```F5 + Keypad8``` | MaxPrieDieus | Should all prie dieus be maximum level |
 
 ## Installation
 This mod is available for download through the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous.Modding.Installer) <br>
