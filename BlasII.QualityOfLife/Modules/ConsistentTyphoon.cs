@@ -5,15 +5,12 @@ using UnityEngine;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class ConsistentTyphoon : BaseModule
+internal class ConsistentTyphoon_4 : BaseModule
 {
     private Vector3 _lastPosition = Vector3.zero;
 
     private ObjectCache<CharacterBody2DImpl> _playerBody;
     private ObjectCache<Animator> _playerAnimator;
-
-    public override string Name { get; } = "ConsistentTyphoon";
-    public override int Order { get; } = 4;
 
     public override void OnStart()
     {

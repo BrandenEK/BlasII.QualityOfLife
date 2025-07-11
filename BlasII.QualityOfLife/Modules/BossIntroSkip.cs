@@ -4,11 +4,7 @@ using Il2CppTGK.Game;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class BossIntroSkip : BaseModule
-{
-    public override string Name { get; } = "BossIntroSkip";
-    public override int Order { get; } = 3;
-}
+internal class BossIntroSkip_3 : BaseModule { }
 
 /// <summary>
 /// Force boss intro flags

@@ -5,11 +5,7 @@ using System.Linq;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class KeepEnvoyAltarpieces : BaseModule
-{
-    public override string Name { get; } = "KeepEnvoyAltarpieces";
-    public override int Order { get; } = 5;
-}
+internal class KeepEnvoyAltarpieces_5 : BaseModule { }
 
 /// <summary>
 /// Prevent removal of FG30-FG33

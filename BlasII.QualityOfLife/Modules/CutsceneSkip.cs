@@ -9,11 +9,7 @@ using UnityEngine;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class CutsceneSkip : BaseModule
-{
-    public override string Name { get; } = "CutsceneSkip";
-    public override int Order { get; } = 1;
-}
+internal class CutsceneSkip_1 : BaseModule { }
 
 /// <summary>
 /// Skip cutscenes from playmaker
