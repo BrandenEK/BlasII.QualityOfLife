@@ -60,6 +60,7 @@ public class QualityOfLife : BlasIIMod
         var input = new Dictionary<string, KeyCode>
         {
             { "Activator", KeyCode.F5 },
+            { "Display", KeyCode.KeypadPeriod },
             { "Toggle_All", KeyCode.KeypadEnter },
         };
 
@@ -77,6 +78,12 @@ public class QualityOfLife : BlasIIMod
         // Check if activator key is held
         if (!InputHandler.GetKey("Activator"))
             return false;
+
+        // Check if display key was pressed
+        if (InputHandler.GetKeyDown("Display"))
+        {
+            DisplaySettings(CurrentSettings);
+        }
 
         // Check if toggle all key was pressed
         if (InputHandler.GetKeyDown("Toggle_All"))
@@ -126,6 +133,14 @@ public class QualityOfLife : BlasIIMod
         property.SetValue(CurrentSettings, status);
 
         //ModLog.Info($"Setting module '{name}' to {status}");
+    }
+
+    /// <summary>
+    /// Displays the enabled status of all settings
+    /// </summary>
+    private void DisplaySettings(QolSettings settings)
+    {
+
     }
 
     ///// <summary>
