@@ -60,6 +60,7 @@ public class QualityOfLife : BlasIIMod
         var input = new Dictionary<string, KeyCode>
         {
             { "Activator", KeyCode.F5 },
+            { "Display", KeyCode.KeypadPeriod },
             { "Toggle_All", KeyCode.KeypadEnter },
         };
 
@@ -78,6 +79,12 @@ public class QualityOfLife : BlasIIMod
         if (!InputHandler.GetKey("Activator"))
             return false;
 
+        // Check if display key was pressed
+        if (InputHandler.GetKeyDown("Display"))
+        {
+            DisplaySettings(CurrentSettings);
+        }
+
         // Check if toggle all key was pressed
         if (InputHandler.GetKeyDown("Toggle_All"))
         {
@@ -86,7 +93,7 @@ public class QualityOfLife : BlasIIMod
             foreach (var module in _modules)
                 SetModuleStatus(module.Name, _toggleStatus);
 
-            ModLog.Info($"Toggling all modules to {_toggleStatus}");
+            DisplayMessage("Toggling all modules to {0}", _toggleStatus);
             return true;
         }
 
@@ -111,10 +118,10 @@ public class QualityOfLife : BlasIIMod
     private void ToggleModuleStatus(string name)
     {
         PropertyInfo property = typeof(QolSettings).GetProperty(name);
-        bool status = (bool)property.GetValue(CurrentSettings, null);
-        property.SetValue(CurrentSettings, !status);
+        bool status = !(bool)property.GetValue(CurrentSettings, null);
+        property.SetValue(CurrentSettings, status);
 
-        ModLog.Info($"Toggling module '{name}' to {!status}");
+        DisplayMessage($"Toggling module '{name}' to {{0}}", status);
     }
 
     /// <summary>
@@ -126,6 +133,33 @@ public class QualityOfLife : BlasIIMod
         property.SetValue(CurrentSettings, status);
 
         //ModLog.Info($"Setting module '{name}' to {status}");
+    }
+
+    /// <summary>
+    /// Displays the enabled status of all settings
+    /// </summary>
+    private void DisplaySettings(QolSettings settings)
+    {
+        ModLog.Info(string.Empty);
+        ModLog.Info("Quality of Life Settings:");
+
+        foreach (var property in typeof(QolSettings).GetProperties())
+        {
+            string name = property.Name;
+            bool status = (bool)property.GetValue(settings, null);
+
+            DisplayMessage($"{name}: {{0}}", status);
+        }
+
+        ModLog.Info(string.Empty);
+    }
+
+    /// <summary>
+    /// Displays a colored message with a status property
+    /// </summary>
+    private void DisplayMessage(string message, bool status)
+    {
+        ModLog.Custom(string.Format(message, status ? "enabled" : "disabled"), status ? ENABLED_COLOR : DISABLED_COLOR);
     }
 
     ///// <summary>
@@ -158,4 +192,7 @@ public class QualityOfLife : BlasIIMod
         _modules.AddRange(modules);
         ModLog.Info($"Loaded {_modules.Count} modules");
     }
+
+    private static readonly System.Drawing.Color ENABLED_COLOR = System.Drawing.Color.FromArgb(125, 191, 3);
+    private static readonly System.Drawing.Color DISABLED_COLOR = System.Drawing.Color.FromArgb(230, 69, 48);
 }

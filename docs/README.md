@@ -7,6 +7,7 @@
 ## Features
 - Enable/disable individual qol enhancements with a single keypress
 - Press 'F5 + KeypadEnter' to toggle all modules at once
+- Press 'F5 + KeypadPeriod' to display the status of all modules
 
 ## Available enhancements
 | Keybinding | Name | Effect |
