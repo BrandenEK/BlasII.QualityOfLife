@@ -93,7 +93,7 @@ public class QualityOfLife : BlasIIMod
             foreach (var module in _modules)
                 SetModuleStatus(module.Name, _toggleStatus);
 
-            ModLog.Custom($"Toggling all modules to {FormatStatus(_toggleStatus)}", _toggleStatus ? ENABLED_COLOR : DISABLED_COLOR);
+            DisplayMessage("Toggling all modules to {0}", _toggleStatus);
             return true;
         }
 
@@ -121,7 +121,7 @@ public class QualityOfLife : BlasIIMod
         bool status = !(bool)property.GetValue(CurrentSettings, null);
         property.SetValue(CurrentSettings, status);
 
-        ModLog.Custom($"Toggling module '{name}' to {FormatStatus(status)}", status ? ENABLED_COLOR : DISABLED_COLOR);
+        DisplayMessage($"Toggling module '{name}' to {{0}}", status);
     }
 
     /// <summary>
@@ -148,10 +148,18 @@ public class QualityOfLife : BlasIIMod
             string name = property.Name;
             bool status = (bool)property.GetValue(settings, null);
 
-            ModLog.Custom($"{name}: {FormatStatus(status)}", status ? ENABLED_COLOR : DISABLED_COLOR);
+            DisplayMessage($"{name}: {{0}}", status);
         }
 
         ModLog.Info(string.Empty);
+    }
+
+    /// <summary>
+    /// Displays a colored message with a status property
+    /// </summary>
+    private void DisplayMessage(string message, bool status)
+    {
+        ModLog.Custom(string.Format(message, status ? "enabled" : "disabled"), status ? ENABLED_COLOR : DISABLED_COLOR);
     }
 
     ///// <summary>
@@ -183,14 +191,6 @@ public class QualityOfLife : BlasIIMod
 
         _modules.AddRange(modules);
         ModLog.Info($"Loaded {_modules.Count} modules");
-    }
-
-    /// <summary>
-    /// Converts the status to formatted text
-    /// </summary>
-    private string FormatStatus(bool status)
-    {
-        return status ? "enabled" : "disabled";
     }
 
     private static readonly System.Drawing.Color ENABLED_COLOR = System.Drawing.Color.FromArgb(125, 191, 3);
