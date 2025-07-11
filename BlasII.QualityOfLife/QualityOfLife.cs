@@ -93,7 +93,7 @@ public class QualityOfLife : BlasIIMod
             foreach (var module in _modules)
                 SetModuleStatus(module.Name, _toggleStatus);
 
-            ModLog.Info($"Toggling all modules to {_toggleStatus}");
+            ModLog.Custom($"Toggling all modules to {FormatStatus(_toggleStatus)}", _toggleStatus ? ENABLED_COLOR : DISABLED_COLOR);
             return true;
         }
 
@@ -118,10 +118,10 @@ public class QualityOfLife : BlasIIMod
     private void ToggleModuleStatus(string name)
     {
         PropertyInfo property = typeof(QolSettings).GetProperty(name);
-        bool status = (bool)property.GetValue(CurrentSettings, null);
-        property.SetValue(CurrentSettings, !status);
+        bool status = !(bool)property.GetValue(CurrentSettings, null);
+        property.SetValue(CurrentSettings, status);
 
-        ModLog.Info($"Toggling module '{name}' to {!status}");
+        ModLog.Custom($"Toggling module '{name}' to {FormatStatus(status)}", status ? ENABLED_COLOR : DISABLED_COLOR);
     }
 
     /// <summary>
@@ -140,7 +140,18 @@ public class QualityOfLife : BlasIIMod
     /// </summary>
     private void DisplaySettings(QolSettings settings)
     {
+        ModLog.Info(string.Empty);
+        ModLog.Info("Quality of Life Settings:");
 
+        foreach (var property in typeof(QolSettings).GetProperties())
+        {
+            string name = property.Name;
+            bool status = (bool)property.GetValue(settings, null);
+
+            ModLog.Custom($"{name}: {FormatStatus(status)}", status ? ENABLED_COLOR : DISABLED_COLOR);
+        }
+
+        ModLog.Info(string.Empty);
     }
 
     ///// <summary>
@@ -173,4 +184,15 @@ public class QualityOfLife : BlasIIMod
         _modules.AddRange(modules);
         ModLog.Info($"Loaded {_modules.Count} modules");
     }
+
+    /// <summary>
+    /// Converts the status to formatted text
+    /// </summary>
+    private string FormatStatus(bool status)
+    {
+        return status ? "enabled" : "disabled";
+    }
+
+    private static readonly System.Drawing.Color ENABLED_COLOR = System.Drawing.Color.FromArgb(125, 191, 3);
+    private static readonly System.Drawing.Color DISABLED_COLOR = System.Drawing.Color.FromArgb(230, 69, 48);
 }
