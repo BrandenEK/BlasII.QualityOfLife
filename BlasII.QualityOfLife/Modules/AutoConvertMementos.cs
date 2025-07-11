@@ -10,11 +10,7 @@ using UnityEngine;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class AutoConvertMementos : BaseModule
-{
-    public override string Name { get; } = "AutoConvertMementos";
-    public override int Order { get; } = 6;
-}
+internal class AutoConvertMementos_6 : BaseModule { }
 
 /// <summary>
 /// If a remembrance item was given on this frame, replace it with the figure

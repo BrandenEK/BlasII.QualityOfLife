@@ -3,11 +3,7 @@ using Il2CppTGK.Game.Components.StatsSystem;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class DoubleOrbExperience : BaseModule
-{
-    public override string Name { get; } = "DoubleOrbExperience";
-    public override int Order { get; } = 7;
-}
+internal class DoubleOrbExperience_7 : BaseModule { }
 
 /// <summary>
 /// Multiply the orbxp added by 2

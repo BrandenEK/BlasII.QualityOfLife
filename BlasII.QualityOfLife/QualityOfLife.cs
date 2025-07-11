@@ -55,7 +55,6 @@ public class QualityOfLife : BlasIIMod
     /// <summary>
     /// Creates the keybindings dictionary from all the modules
     /// </summary>
-    /// <returns></returns>
     private Dictionary<string, KeyCode> SetupInput()
     {
         var input = new Dictionary<string, KeyCode>

@@ -8,11 +8,7 @@ using System.Linq;
 
 namespace BlasII.QualityOfLife.Modules;
 
-internal class MaxPrieDieus : BaseModule
-{
-    public override string Name { get; } = "MaxPrieDieus";
-    public override int Order { get; } = 8;
-}
+internal class MaxPrieDieus_8 : BaseModule { }
 
 /// <summary>
 /// Always have all the PD upgrades
