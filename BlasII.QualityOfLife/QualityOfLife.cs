@@ -16,16 +16,18 @@ public class QualityOfLife : BlasIIMod
     internal QualityOfLife() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
     private readonly List<BaseModule> _modules = [];
+
+    private QolSettings _settings;
     private bool _toggleStatus = false;
 
     /// <inheritdoc cref="QolSettings" />
-    public QolSettings CurrentSettings { get; private set; }
+    public QolSettings CurrentSettings => _settings;
 
     /// <inheritdoc/>
     protected override void OnInitialize()
     {
         // Load settings and modules
-        CurrentSettings = ConfigHandler.Load<QolSettings>();
+        _settings = ConfigHandler.Load<QolSettings>();
         LoadModules();
 
         // Initialize handlers
@@ -42,7 +44,7 @@ public class QualityOfLife : BlasIIMod
     {
         // If a glitch status was updated, save the config
         if (ProcessInput())
-            ConfigHandler.Save(CurrentSettings);
+            ConfigHandler.Save(_settings);
 
         if (!SceneHelper.GameSceneLoaded)
             return;
@@ -82,7 +84,7 @@ public class QualityOfLife : BlasIIMod
         // Check if display key was pressed
         if (InputHandler.GetKeyDown("Display"))
         {
-            DisplaySettings(CurrentSettings);
+            DisplaySettings(_settings);
         }
 
         // Check if toggle all key was pressed
@@ -118,8 +120,8 @@ public class QualityOfLife : BlasIIMod
     private void ToggleModuleStatus(string name)
     {
         PropertyInfo property = typeof(QolSettings).GetProperty(name);
-        bool status = !(bool)property.GetValue(CurrentSettings, null);
-        property.SetValue(CurrentSettings, status);
+        bool status = !(bool)property.GetValue(_settings, null);
+        property.SetValue(_settings, status);
 
         DisplayMessage($"Toggling module '{name}' to {{0}}", status);
     }
@@ -130,7 +132,7 @@ public class QualityOfLife : BlasIIMod
     private void SetModuleStatus(string name, bool status)
     {
         PropertyInfo property = typeof(QolSettings).GetProperty(name);
-        property.SetValue(CurrentSettings, status);
+        property.SetValue(_settings, status);
 
         //ModLog.Info($"Setting module '{name}' to {status}");
     }
