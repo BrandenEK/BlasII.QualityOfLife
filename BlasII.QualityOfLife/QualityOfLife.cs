@@ -31,7 +31,6 @@ public class QualityOfLife : BlasIIMod
         LoadModules();
 
         // Initialize handlers
-        //MessageHandler.AddGlobalListener(ReceiveSetting);
         InputHandler.RegisterDefaultKeybindings(SetupInput());
 
         // Call OnStart for all modules
@@ -42,7 +41,7 @@ public class QualityOfLife : BlasIIMod
     /// <inheritdoc/>
     protected override void OnUpdate()
     {
-        // If a glitch status was updated, save the config
+        // If a qol status was updated, save the config
         if (ProcessInput())
             ConfigHandler.Save(_settings);
 
@@ -163,23 +162,6 @@ public class QualityOfLife : BlasIIMod
     {
         ModLog.Custom(string.Format(message, status ? "enabled" : "disabled"), status ? ENABLED_COLOR : DISABLED_COLOR);
     }
-
-    ///// <summary>
-    ///// Handles receiving settings from other mods
-    ///// Removed because that would update the config without the user knowing
-    ///// </summary>
-    //private void ReceiveSetting(string _, string setting, string value)
-    //{
-    //    BaseModule module = _modules.FirstOrDefault(x => x.Name == setting);
-
-    //    if (module == null)
-    //    {
-    //        ModLog.Error($"Unknown setting: '{setting}'");
-    //        return;
-    //    }
-
-    //    SetModuleStatus(setting, bool.Parse(value));
-    //}
 
     /// <summary>
     /// Loads all modules using reflection
