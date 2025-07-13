@@ -27,6 +27,17 @@ class PrieDieuManager_IsUpgraded_Patch_MPD
         __result = true;
     }
 }
+[HarmonyPatch(typeof(PrieDieuManager), nameof(PrieDieuManager.GetPrieDieuLevel))]
+class PrieDieuManager_GetPrieDieuLevel_Patch
+{
+    public static void Postfix(ref int __result)
+    {
+        if (!Main.QualityOfLife.CurrentSettings.MaxPrieDieus)
+            return;
+
+        __result = 3;
+    }
+}
 
 /// <summary>
 /// Skip the first three upgrades from the Cobijadas
