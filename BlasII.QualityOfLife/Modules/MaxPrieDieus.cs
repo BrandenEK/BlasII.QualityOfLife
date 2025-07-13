@@ -1,6 +1,4 @@
-﻿using BlasII.ModdingAPI;
-using HarmonyLib;
-using Il2CppPlaymaker.PrieDieu;
+﻿using HarmonyLib;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Managers;
 using Il2CppTGK.Game.PrieDieu;
@@ -21,10 +19,18 @@ class PrieDieuManager_IsUpgraded_Patch_MPD
         if (!Main.QualityOfLife.CurrentSettings.MaxPrieDieus)
             return;
 
-        if (upgradeID.name == "TeleportToHUBUpgrade")
+        __result = true;
+    }
+}
+[HarmonyPatch(typeof(PrieDieuManager), nameof(PrieDieuManager.GetPrieDieuLevel))]
+class PrieDieuManager_GetPrieDieuLevel_Patch
+{
+    public static void Postfix(ref int __result)
+    {
+        if (!Main.QualityOfLife.CurrentSettings.MaxPrieDieus)
             return;
 
-        __result = true;
+        __result = 3;
     }
 }
 
@@ -46,23 +52,5 @@ class QuestManager_GetQuestVarBoolValue_Patch_MPD
             return;
 
         __result = true;
-    }
-}
-
-/// <summary>
-/// Skip the first three upgrades from the Cobijadas
-/// </summary>
-[HarmonyPatch(typeof(IsPrieDieuUpgraded), nameof(IsPrieDieuUpgraded.OnEnter))]
-class IsPrieDieuUpgraded_OnEnter_Patch_MPD
-{
-    public static bool Prefix(IsPrieDieuUpgraded __instance)
-    {
-        if (!Main.QualityOfLife.CurrentSettings.MaxPrieDieus)
-            return true;
-
-        ModLog.Info($"Skipping prieu dieu upgrade: {__instance.prieDieuUpgrade.Value.name}");
-        __instance.Fsm.Event(__instance.yesEvent);
-        __instance.Finish();
-        return false;
     }
 }
