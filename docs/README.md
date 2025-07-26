@@ -21,6 +21,10 @@
 | ```F5 + Keypad7``` | DoubleOrbExperience | Should the Mark of Martyrdom points you receive be doubled |
 | ```F5 + Keypad8``` | MaxPrieDieus | Should all prie dieus be maximum level |
 
+> [!IMPORTANT]
+> All modules are disabled by default.  
+> Enable the desired ones with the keybinding or by modifying the config file first.
+
 ## Installation
 This mod is available for download through the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous.Modding.Installer) <br>
 Required dependencies:
