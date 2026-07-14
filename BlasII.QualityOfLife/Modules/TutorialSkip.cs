@@ -30,7 +30,7 @@ internal class ShowTutorial_OnEnter_Patch_TS
 /// <summary>
 /// Skip tutorials from the manager
 /// </summary>
-[HarmonyPatch(typeof(TutorialManager), nameof(TutorialManager.ShowTutorialAsync))]
+[HarmonyPatch(typeof(TutorialManager), nameof(TutorialManager.ShowTutorialAsync), typeof(TutorialID))]
 internal class TutorialManager_ShowTutorialAsync_Patch_TS
 {
     public static bool Prefix(TutorialID tutorialID)
