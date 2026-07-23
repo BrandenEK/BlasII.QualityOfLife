@@ -20,6 +20,7 @@
 | ```F5 + Keypad6``` | AutoConvertMementos | Should remembrance items be turned into figures automatically |
 | ```F5 + Keypad7``` | DoubleOrbExperience | Should the Mark of Martyrdom points you receive be doubled |
 | ```F5 + Keypad8``` | MaxPrieDieus | Should all prie dieus be maximum level |
+| ```F5 + Keypad9``` | QuickSwapAlts | Should a button be added to quickly swap between alts (Hold 'Interact' and press 'ChangeWeapon') |
 
 > [!IMPORTANT]
 > All modules are disabled by default.  
