@@ -12,18 +12,32 @@ internal class QuickSwapAlts_9 : BaseModule
 {
     public override void OnUpdate()
     {
-        if (Main.QualityOfLife.InputHandler.GetButton(ModdingAPI.Input.ButtonType.Interact))
+        if (!Main.QualityOfLife.CurrentSettings.QuickSwapAlts)
+            return;
+
+        if (!Main.QualityOfLife.InputHandler.GetButton(ModdingAPI.Input.ButtonType.Interact))
+            return;
+
+        //if (Main.QualityOfLife.InputHandler.GetButtonDown(ModdingAPI.Input.ButtonType.ChangeWeapon))
+        if (!Input.GetKeyDown(KeyCode.R))
+            return;
+
+        ModLog.Warn("quick swap");
+
+        WeaponID current = CoreCache.EquipmentManager.GetCurrentWeapon();
+        ModLog.Error(current.name);
+
+        if (current == AssetStorage.Weapons[WEAPON_IDS.Censer])
         {
-            //ModLog.Error("Hold interact");
+            // Swap from censer to whip
+            WeaponID whip = AssetStorage.Weapons[WEAPON_IDS.Whip];
 
-            if (UnityEngine.Input.GetKeyDown(KeyCode.R))
-            //if (Main.QualityOfLife.InputHandler.GetButtonDown(ModdingAPI.Input.ButtonType.ChangeWeapon))
-            {
-                ModLog.Warn("quick swap");
-                Object.FindObjectOfType<ChangeWeaponAbility>().ChangeWeapon(AssetStorage.Weapons[WEAPON_IDS.Whip]);
-                CoreCache.EquipmentManager.SwapWeapons(AssetStorage.Weapons[WEAPON_IDS.Censer], AssetStorage.Weapons[WEAPON_IDS.Whip]);
+            if (!CoreCache.EquipmentManager.HasWeapon(whip))
+                return;
 
-            }
+            ModLog.Info($"Quickswapping from {current.name} to {whip.name}");
+            CoreCache.EquipmentManager.SwapWeapons(current, whip);
+            Object.FindObjectOfType<ChangeWeaponAbility>().ChangeWeapon(whip);
         }
     }
 }
