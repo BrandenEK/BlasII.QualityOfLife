@@ -45,4 +45,9 @@ public class QolSettings
     /// Should all prie dieus be maximum level
     /// </summary>
     public bool MaxPrieDieus { get; set; }
+
+    /// <summary>
+    /// Should a button be added to quickly swap between alts
+    /// </summary>
+    public bool QuickSwapAlts { get; set; }
 }
