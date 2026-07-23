@@ -3,7 +3,6 @@ using BlasII.ModdingAPI.Assets;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.Abilities;
 using Il2CppTGK.Game.Components.Attack.Data;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BlasII.QualityOfLife.Modules;
@@ -18,26 +17,28 @@ internal class QuickSwapAlts_9 : BaseModule
         if (!Main.QualityOfLife.InputHandler.GetButton(ModdingAPI.Input.ButtonType.Interact))
             return;
 
-        //if (Main.QualityOfLife.InputHandler.GetButtonDown(ModdingAPI.Input.ButtonType.ChangeWeapon))
-        if (!Input.GetKeyDown(KeyCode.R))
+        if (!Main.QualityOfLife.InputHandler.GetButtonDown(ModdingAPI.Input.ButtonType.NextWeapon))
             return;
 
-        ModLog.Warn("quick swap");
-
         WeaponID current = CoreCache.EquipmentManager.GetCurrentWeapon();
-        ModLog.Error(current.name);
 
         if (current == AssetStorage.Weapons[WEAPON_IDS.Censer])
-        {
-            // Swap from censer to whip
-            WeaponID whip = AssetStorage.Weapons[WEAPON_IDS.Whip];
+            TryPerformSwap(current, AssetStorage.Weapons[WEAPON_IDS.Whip]);
+        else if (current == AssetStorage.Weapons[WEAPON_IDS.Whip])
+            TryPerformSwap(current, AssetStorage.Weapons[WEAPON_IDS.Censer]);
+        else if (current == AssetStorage.Weapons[WEAPON_IDS.RosaryBlade])
+            TryPerformSwap(current, AssetStorage.Weapons[WEAPON_IDS.MeaCulpa]);
+        else if (current == AssetStorage.Weapons[WEAPON_IDS.MeaCulpa])
+            TryPerformSwap(current, AssetStorage.Weapons[WEAPON_IDS.RosaryBlade]);
+    }
 
-            if (!CoreCache.EquipmentManager.HasWeapon(whip))
-                return;
+    private void TryPerformSwap(WeaponID current, WeaponID next)
+    {
+        if (!CoreCache.EquipmentManager.HasWeapon(next))
+            return;
 
-            ModLog.Info($"Quickswapping from {current.name} to {whip.name}");
-            CoreCache.EquipmentManager.SwapWeapons(current, whip);
-            Object.FindObjectOfType<ChangeWeaponAbility>().ChangeWeapon(whip);
-        }
+        ModLog.Info($"Quickswapping from {current.name} to {next.name}");
+        CoreCache.EquipmentManager.SwapWeapons(current, next);
+        Object.FindObjectOfType<ChangeWeaponAbility>().FastChange(next);
     }
 }
