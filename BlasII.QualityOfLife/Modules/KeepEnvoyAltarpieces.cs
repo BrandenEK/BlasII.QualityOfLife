@@ -15,7 +15,7 @@ class RemoveItem_OnEnter_Patch_KEA
 {
     public static bool Prefix(RemoveItem __instance)
     {
-        string itemId = __instance.itemID.name;
+        string itemId = __instance.itemID?.name ?? string.Empty;
 
         if (!Main.QualityOfLife.CurrentSettings.KeepEnvoyAltarpieces || !REMOVAL_ITEMS.Contains(itemId))
             return true;
@@ -36,7 +36,7 @@ class AddItem_OnEnter_Patch_KEA
 {
     public static bool Prefix(AddItem __instance)
     {
-        string itemId = __instance.itemID.name;
+        string itemId = __instance.itemID?.name ?? string.Empty;
 
         if (!Main.QualityOfLife.CurrentSettings.KeepEnvoyAltarpieces || !ADDITION_ITEMS.Contains(itemId))
             return true;
